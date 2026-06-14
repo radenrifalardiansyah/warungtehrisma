@@ -33,11 +33,8 @@ export default function BottomNav() {
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       <div
-        className="backdrop-blur-xl border-t border-amber-800/40"
-        style={{
-          background: 'rgba(28, 10, 0, 0.96)',
-          boxShadow: '0 -6px 32px rgba(0,0,0,0.35)',
-        }}
+        className="bg-white/97 backdrop-blur-xl border-t border-amber-200"
+        style={{ boxShadow: '0 -4px 20px rgba(146,64,14,0.12)' }}
       >
         <div className="flex items-stretch">
           {allItems.map(item => {
@@ -56,8 +53,8 @@ export default function BottomNav() {
                   <div className="relative">
                     <Icon
                       size={22}
-                      className={totalItems > 0 ? 'text-amber-400' : 'text-white/40'}
-                      strokeWidth={totalItems > 0 ? 2.2 : 1.8}
+                      className={totalItems > 0 ? 'text-amber-600' : 'text-amber-400'}
+                      strokeWidth={totalItems > 0 ? 2.2 : 2}
                     />
                     <AnimatePresence>
                       {totalItems > 0 && (
@@ -76,7 +73,7 @@ export default function BottomNav() {
                   </div>
                   <span
                     className={`text-[10px] font-semibold tracking-tight ${
-                      totalItems > 0 ? 'text-amber-400' : 'text-white/40'
+                      totalItems > 0 ? 'text-amber-600' : 'text-amber-400'
                     }`}
                   >
                     Keranjang
@@ -102,12 +99,12 @@ export default function BottomNav() {
 
                   <Icon
                     size={22}
-                    className={isActive ? 'text-amber-400' : 'text-white/45'}
-                    strokeWidth={isActive ? 2.3 : 1.7}
+                    className={isActive ? 'text-amber-600' : 'text-amber-800/50'}
+                    strokeWidth={isActive ? 2.3 : 2}
                   />
                   <span
                     className={`text-[10px] font-semibold tracking-tight transition-colors ${
-                      isActive ? 'text-amber-400' : 'text-white/45'
+                      isActive ? 'text-amber-600' : 'text-amber-800/50'
                     }`}
                   >
                     {item.label}
