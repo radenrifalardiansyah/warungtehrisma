@@ -4,10 +4,12 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight, Flame } from 'lucide-react';
 import { getFeaturedProducts } from '@/lib/products';
+import { useLanguage } from '@/contexts/LanguageContext';
 import ProductCard from './ProductCard';
 
 export default function FeaturedSection() {
   const featured = getFeaturedProducts();
+  const { t } = useLanguage();
 
   return (
     <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -22,15 +24,15 @@ export default function FeaturedSection() {
           <div className="flex items-center gap-2 mb-2">
             <Flame size={16} className="text-amber-500" />
             <p className="text-amber-600/70 text-sm font-semibold tracking-widest uppercase">
-              Terlaris
+              {t.featured.badge}
             </p>
           </div>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold">
-            <span className="text-amber-950">Menu </span>
-            <span className="gradient-text">Populer</span>
+            <span className="text-amber-950">{t.featured.title1} </span>
+            <span className="gradient-text">{t.featured.title2}</span>
           </h2>
           <p className="text-amber-800/55 text-sm sm:text-base mt-1.5 max-w-md">
-            Pilihan terbaik yang paling sering dipesan pelanggan kami
+            {t.featured.subtitle}
           </p>
         </div>
 
@@ -40,7 +42,7 @@ export default function FeaturedSection() {
             whileTap={{ scale: 0.97 }}
             className="btn-outline flex items-center gap-2 px-5 py-2.5 text-sm font-semibold flex-shrink-0"
           >
-            Lihat Semua <ArrowRight size={14} />
+            {t.featured.seeAll} <ArrowRight size={14} />
           </motion.button>
         </Link>
       </motion.div>
@@ -70,11 +72,12 @@ export default function FeaturedSection() {
         <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
           <div>
             <h3 className="font-display text-xl sm:text-2xl lg:text-3xl font-bold text-amber-950 mb-2">
-              Pesan via <span className="gradient-text">WhatsApp</span> — Cepat & Mudah!
+              {t.featured.ctaTitle.replace('WhatsApp', '')}
+              <span className="gradient-text">WhatsApp</span>
+              {t.featured.ctaTitle.includes('WhatsApp') ? t.featured.ctaTitle.split('WhatsApp')[1] : ''}
             </h3>
             <p className="text-amber-800/60 text-sm sm:text-base max-w-sm">
-              Tambahkan menu ke keranjang, isi data dirimu, dan konfirmasi pesanan langsung
-              lewat WhatsApp dalam hitungan detik.
+              {t.featured.ctaDesc}
             </p>
           </div>
           <Link href="/products" className="flex-shrink-0">
@@ -83,7 +86,7 @@ export default function FeaturedSection() {
               whileTap={{ scale: 0.97 }}
               className="btn-primary px-6 py-3 text-sm font-bold shadow-lg flex items-center gap-2 whitespace-nowrap"
             >
-              Mulai Pesan <ArrowRight size={14} />
+              {t.featured.ctaBtn} <ArrowRight size={14} />
             </motion.button>
           </Link>
         </div>

@@ -7,12 +7,14 @@ import Image from 'next/image';
 import { X, ShoppingCart, Plus, Minus, Trash2, ArrowRight, ShoppingBag } from 'lucide-react';
 import { useCartStore } from '@/lib/store';
 import { formatCurrency } from '@/lib/whatsapp';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Cart() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, getTotalItems, getTotalPrice } =
     useCartStore();
   const totalItems = getTotalItems();
   const totalPrice = getTotalPrice();
+  const { t } = useLanguage();
 
   useEffect(() => {
     useCartStore.persist.rehydrate();
@@ -54,7 +56,7 @@ export default function Cart() {
             <div className="flex items-center justify-between px-5 py-4 border-b border-amber-100">
               <div className="flex items-center gap-2">
                 <ShoppingCart size={19} className="text-amber-600" />
-                <h2 className="font-display text-lg font-bold text-amber-950">Keranjang</h2>
+                <h2 className="font-display text-lg font-bold text-amber-950">{t.cart.title}</h2>
                 {totalItems > 0 && (
                   <motion.span
                     key={totalItems}
@@ -92,16 +94,16 @@ export default function Cart() {
                       🛒
                     </motion.div>
                     <p className="font-display text-lg font-semibold text-amber-800/60 mb-1">
-                      Keranjang Kosong
+                      {t.cart.empty}
                     </p>
-                    <p className="text-amber-700/40 text-sm mb-4">Yuk tambahkan menu favoritmu!</p>
+                    <p className="text-amber-700/40 text-sm mb-4">{t.cart.emptyDesc}</p>
                     <Link href="/products" onClick={closeCart}>
                       <motion.button
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.97 }}
                         className="btn-primary px-5 py-2.5 text-sm font-bold flex items-center gap-2"
                       >
-                        Lihat Menu <ArrowRight size={13} />
+                        {t.cart.seeMenu} <ArrowRight size={13} />
                       </motion.button>
                     </Link>
                   </motion.div>
@@ -196,11 +198,11 @@ export default function Cart() {
                 >
                   <div className="bg-amber-50 rounded-xl p-3.5 border border-amber-100">
                     <div className="flex justify-between text-sm text-amber-700/60 mb-1.5">
-                      <span>{totalItems} item</span>
-                      <span>Subtotal</span>
+                      <span>{totalItems} {t.cart.item}</span>
+                      <span>{t.cart.subtotal}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-amber-800/70 text-sm">Total</span>
+                      <span className="text-amber-800/70 text-sm">{t.cart.total}</span>
                       <motion.span
                         key={totalPrice}
                         initial={{ scale: 0.9 }}
@@ -219,7 +221,7 @@ export default function Cart() {
                       className="w-full btn-primary py-3.5 font-bold flex items-center justify-center gap-2 shadow-lg text-sm sm:text-base"
                     >
                       <ShoppingBag size={17} />
-                      Checkout Sekarang
+                      {t.cart.checkout}
                       <ArrowRight size={15} />
                     </motion.button>
                   </Link>

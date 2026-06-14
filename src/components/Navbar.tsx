@@ -7,13 +7,14 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingCart } from 'lucide-react';
 import { useCartStore } from '@/lib/store';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { Locale } from '@/lib/i18n';
 import logo from '@/assets/images/logo-tehrisma.jpeg';
 
-const navLinks = [
-  { href: '/', label: 'Beranda' },
-  { href: '/products', label: 'Menu' },
-  { href: '/reseller', label: 'Reseller' },
-  { href: '/checkout', label: 'Checkout' },
+const LOCALES: { code: Locale; label: string }[] = [
+  { code: 'id', label: 'ID' },
+  { code: 'en', label: 'EN' },
+  { code: 'su', label: 'SU' },
 ];
 
 export default function Navbar() {
@@ -21,6 +22,14 @@ export default function Navbar() {
   const pathname = usePathname();
   const { toggleCart, getTotalItems } = useCartStore();
   const totalItems = getTotalItems();
+  const { t, locale, setLocale } = useLanguage();
+
+  const navLinks = [
+    { href: '/', label: t.nav.home },
+    { href: '/products', label: t.nav.menu },
+    { href: '/reseller', label: t.nav.reseller },
+    { href: '/checkout', label: t.nav.checkout },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -51,12 +60,8 @@ export default function Navbar() {
               <Image src={logo} alt="Cemilan Teh Risma" fill className="object-cover" />
             </motion.div>
             <div className="leading-none">
-              <p className="font-display text-base sm:text-lg font-bold text-amber-800 leading-none">
-                Cemilan
-              </p>
-              <p className="font-display text-sm sm:text-base font-bold gradient-text leading-none">
-                Teh Risma
-              </p>
+              <p className="font-display text-base sm:text-lg font-bold text-amber-800 leading-none">Cemilan</p>
+              <p className="font-display text-sm sm:text-base font-bold gradient-text leading-none">Teh Risma</p>
             </div>
           </Link>
 
@@ -86,6 +91,25 @@ export default function Navbar() {
 
           {/* Right side */}
           <div className="flex items-center gap-2">
+
+            {/* Language toggle */}
+            <div className="flex items-center rounded-xl border border-amber-200 bg-white overflow-hidden shadow-sm">
+              {LOCALES.map(l => (
+                <button
+                  key={l.code}
+                  onClick={() => setLocale(l.code)}
+                  className={`px-2.5 py-1.5 text-xs font-bold transition-all ${
+                    locale === l.code
+                      ? 'text-white'
+                      : 'text-amber-700/60 hover:text-amber-800'
+                  }`}
+                  style={locale === l.code ? { background: 'linear-gradient(135deg, #D97706, #F59E0B)' } : {}}
+                >
+                  {l.label}
+                </button>
+              ))}
+            </div>
+
             {/* Cart button — desktop only */}
             <div className="relative hidden md:flex">
               <motion.button
@@ -95,7 +119,7 @@ export default function Navbar() {
                 className="flex items-center gap-2 px-4 py-2 rounded-xl btn-primary text-sm font-bold shadow-md"
               >
                 <ShoppingCart size={17} />
-                <span>Keranjang</span>
+                <span>{t.nav.cart}</span>
               </motion.button>
               <AnimatePresence>
                 {totalItems > 0 && (

@@ -5,26 +5,20 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Home, LayoutGrid, ShoppingCart, MapPin, Users } from 'lucide-react';
 import { useCartStore } from '@/lib/store';
-
-const pages = [
-  { href: '/', label: 'Beranda', icon: Home },
-  { href: '/products', label: 'Menu', icon: LayoutGrid },
-  { href: '/reseller', label: 'Reseller', icon: Users },
-];
-
-const pageRight = [
-  { href: '/kontak', label: 'Kontak', icon: MapPin },
-];
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function BottomNav() {
   const pathname = usePathname();
   const { toggleCart, getTotalItems } = useCartStore();
   const totalItems = getTotalItems();
+  const { t } = useLanguage();
 
   const allItems = [
-    ...pages,
-    { href: '__cart__', label: 'Keranjang', icon: ShoppingCart },
-    ...pageRight,
+    { href: '/', label: t.nav.home, icon: Home },
+    { href: '/products', label: t.nav.menu, icon: LayoutGrid },
+    { href: '/reseller', label: t.nav.reseller, icon: Users },
+    { href: '__cart__', label: t.nav.cart, icon: ShoppingCart },
+    { href: '/kontak', label: t.nav.kontak, icon: MapPin },
   ];
 
   return (

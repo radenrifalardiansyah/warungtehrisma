@@ -10,6 +10,7 @@ import Navbar from '@/components/Navbar';
 import Cart from '@/components/Cart';
 import BottomNav from '@/components/BottomNav';
 import { WHATSAPP_NUMBER } from '@/lib/whatsapp';
+import { useLanguage } from '@/contexts/LanguageContext';
 import logo from '@/assets/images/logo-tehrisma.jpeg';
 
 const contacts = [
@@ -43,6 +44,7 @@ const contacts = [
 ];
 
 export default function KontakPage() {
+  const { t } = useLanguage();
   return (
     <main className="min-h-screen pb-28" style={{ background: '#FFFBF5' }}>
       <Navbar />
@@ -60,7 +62,7 @@ export default function KontakPage() {
             <Image src={logo} alt="Cemilan Teh Risma" fill className="object-cover" />
           </div>
           <h1 className="font-display text-2xl font-bold text-amber-950 mb-1">Cemilan Teh Risma</h1>
-          <p className="text-amber-700/60 text-sm">Keripik Kimpul & Mie Kremes Khas Bogor</p>
+          <p className="text-amber-700/60 text-sm">{t.kontak.subtitle}</p>
         </motion.div>
 
         {/* Maps embed */}
@@ -98,13 +100,13 @@ export default function KontakPage() {
             <MapPin size={18} className="text-amber-600" />
           </div>
           <div className="flex-1">
-            <p className="text-xs font-semibold text-amber-600 uppercase tracking-wider mb-0.5">Alamat</p>
+            <p className="text-xs font-semibold text-amber-600 uppercase tracking-wider mb-0.5">{t.kontak.addressLabel}</p>
             <p className="text-amber-950 text-sm font-medium leading-snug">
               Jl. Batara Kp. Bubulak No. 54 RT01/RW03<br />
               Kel. Ciluar, Kec. Bogor Utara 16156
             </p>
             <span className="inline-flex items-center gap-1 mt-2 text-xs font-semibold text-amber-600">
-              Buka di Google Maps <ExternalLink size={11} />
+              {t.kontak.openMaps} <ExternalLink size={11} />
             </span>
           </div>
         </motion.a>
@@ -121,13 +123,13 @@ export default function KontakPage() {
             <Clock size={18} className="text-amber-600" />
           </div>
           <div>
-            <p className="text-xs font-semibold text-amber-600 uppercase tracking-wider mb-0.5">Jam Buka</p>
-            <p className="text-amber-950 text-sm font-medium">Setiap Hari, 08.00 – 21.00 WIB</p>
+            <p className="text-xs font-semibold text-amber-600 uppercase tracking-wider mb-0.5">{t.kontak.hoursLabel}</p>
+            <p className="text-amber-950 text-sm font-medium">{t.kontak.hours}</p>
           </div>
         </motion.div>
 
         {/* Contact buttons */}
-        <p className="text-xs font-semibold text-amber-700/50 uppercase tracking-widest mb-3">Hubungi Kami</p>
+        <p className="text-xs font-semibold text-amber-700/50 uppercase tracking-widest mb-3">{t.kontak.contactUs}</p>
         <div className="space-y-3 mb-6">
           {contacts.map((c, i) => {
             const Icon = c.icon;
@@ -173,7 +175,7 @@ export default function KontakPage() {
           style={{ background: 'linear-gradient(135deg, #16A34A, #15803D)', boxShadow: '0 6px 24px rgba(22,163,74,0.3)' }}
         >
           <MessageCircle size={18} />
-          Pesan Sekarang via WhatsApp
+          {t.kontak.orderWA}
         </motion.a>
       </div>
 

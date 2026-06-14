@@ -3,6 +3,7 @@ import { Playfair_Display, Inter } from 'next/font/google';
 import { Toaster } from 'react-hot-toast';
 import SplashScreen from '@/components/SplashScreen';
 import IOSInstallBanner from '@/components/IOSInstallBanner';
+import { LanguageProvider } from '@/contexts/LanguageContext';
 import './globals.css';
 
 const playfair = Playfair_Display({
@@ -90,6 +91,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
       </head>
       <body className="antialiased">
+        <LanguageProvider>
         <SplashScreen />
         <IOSInstallBanner />
         {children}
@@ -114,6 +116,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             },
           }}
         />
+        </LanguageProvider>
       </body>
     </html>
   );

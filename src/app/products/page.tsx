@@ -12,9 +12,7 @@ import ProductBanner from '@/components/ProductBanner';
 import BottomNav from '@/components/BottomNav';
 import { products, categoryData } from '@/lib/products';
 import { Category } from '@/types';
-
-const allTab = { id: 'semua' as Category, name: 'Semua', emoji: '🛒', count: products.length };
-const tabs = [allTab, ...categoryData.map(c => ({ ...c, id: c.id as Category }))];
+import { useLanguage } from '@/contexts/LanguageContext';
 
 function ProductsPage() {
   const searchParams = useSearchParams();
@@ -22,6 +20,10 @@ function ProductsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'default' | 'price-asc' | 'price-desc'>('default');
   const [showSort, setShowSort] = useState(false);
+  const { t } = useLanguage();
+
+  const allTab = { id: 'semua' as Category, name: t.products.allCategory, emoji: '🛒', count: products.length };
+  const tabs = [allTab, ...categoryData.map(c => ({ ...c, id: c.id as Category }))];
 
   useEffect(() => {
     const cat = searchParams.get('category') as Category | null;
@@ -41,9 +43,9 @@ function ProductsPage() {
   }, [activeCategory, searchQuery, sortBy]);
 
   const sortLabels: Record<string, string> = {
-    default: 'Urutan Default',
-    'price-asc': 'Harga Terendah',
-    'price-desc': 'Harga Tertinggi',
+    default: t.products.sort.default,
+    'price-asc': t.products.sort.priceAsc,
+    'price-desc': t.products.sort.priceDesc,
   };
 
   return (
@@ -59,14 +61,14 @@ function ProductsPage() {
           className="text-center mb-10 sm:mb-14"
         >
           <p className="text-amber-600/70 text-sm font-semibold tracking-widest uppercase mb-3">
-            Menu Lengkap
+            {t.products.badge}
           </p>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold mb-3">
-            <span className="text-amber-950">Semua </span>
-            <span className="gradient-text">Menu</span>
+            <span className="text-amber-950">{t.products.title1} </span>
+            <span className="gradient-text">{t.products.title2}</span>
           </h1>
           <p className="text-amber-800/55 text-sm sm:text-base max-w-md mx-auto">
-            {products.length} pilihan menu siap menemani harimu
+            {products.length} {t.products.subtitleSuffix}
           </p>
         </motion.div>
 
@@ -90,7 +92,7 @@ function ProductsPage() {
             <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-500/60" />
             <input
               type="text"
-              placeholder="Cari menu..."
+              placeholder={t.products.search}
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-10 py-3 rounded-xl input-field text-sm placeholder:text-amber-700/30"
@@ -189,9 +191,9 @@ function ProductsPage() {
         {/* Count */}
         <div className="flex items-center mb-5">
           <p className="text-amber-800/50 text-sm">
-            <span className="text-amber-700 font-semibold">{filtered.length}</span> menu ditemukan
+            <span className="text-amber-700 font-semibold">{filtered.length}</span> {t.products.found}
             {searchQuery && (
-              <span> untuk <span className="text-amber-600 font-semibold">&quot;{searchQuery}&quot;</span></span>
+              <span> {t.products.foundFor} <span className="text-amber-600 font-semibold">&quot;{searchQuery}&quot;</span></span>
             )}
           </p>
         </div>
@@ -226,16 +228,16 @@ function ProductsPage() {
                 🔍
               </motion.div>
               <h3 className="font-display text-xl font-bold text-amber-900/50 mb-2">
-                Menu tidak ditemukan
+                {t.products.notFound}
               </h3>
               <p className="text-amber-700/45 text-sm mb-5">
-                Coba kata kunci lain atau pilih kategori berbeda
+                {t.products.notFoundDesc}
               </p>
               <button
                 onClick={() => { setSearchQuery(''); setActiveCategory('semua'); }}
                 className="btn-primary px-5 py-2.5 text-sm font-bold"
               >
-                Reset Filter
+                {t.products.reset}
               </button>
             </motion.div>
           )}

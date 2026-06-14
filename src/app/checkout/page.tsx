@@ -15,6 +15,7 @@ import BottomNav from '@/components/BottomNav';
 import { useCartStore } from '@/lib/store';
 import { formatCurrency, openWhatsApp } from '@/lib/whatsapp';
 import { CustomerInfo } from '@/types';
+import { useLanguage } from '@/contexts/LanguageContext';
 import toast from 'react-hot-toast';
 
 const defaultCustomer: CustomerInfo = {
@@ -26,6 +27,7 @@ export default function CheckoutPage() {
   const [customer, setCustomer] = useState<CustomerInfo>(defaultCustomer);
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState<'cart' | 'info' | 'confirm'>('cart');
+  const { t } = useLanguage();
 
   const totalItems = getTotalItems();
   const totalPrice = getTotalPrice();
@@ -33,14 +35,14 @@ export default function CheckoutPage() {
     setCustomer(prev => ({ ...prev, [field]: value }));
 
   const validateStep1 = () => {
-    if (items.length === 0) { toast.error('Keranjang kosong!'); return false; }
+    if (items.length === 0) { toast.error(t.checkout.toast.emptyCart); return false; }
     return true;
   };
   const validateStep2 = () => {
-    if (!customer.name.trim()) { toast.error('Nama harus diisi'); return false; }
-    if (!customer.phone.trim() || customer.phone.length < 8) { toast.error('Nomor HP tidak valid'); return false; }
+    if (!customer.name.trim()) { toast.error(t.checkout.toast.nameRequired); return false; }
+    if (!customer.phone.trim() || customer.phone.length < 8) { toast.error(t.checkout.toast.phoneInvalid); return false; }
     if (customer.deliveryMethod === 'delivery' && !customer.address.trim()) {
-      toast.error('Alamat harus diisi untuk delivery'); return false;
+      toast.error(t.checkout.toast.addressRequired); return false;
     }
     return true;
   };
@@ -49,17 +51,17 @@ export default function CheckoutPage() {
     setLoading(true);
     try {
       openWhatsApp(items, customer, totalPrice);
-      toast.success('Pesanan dikirim ke WhatsApp! 🎉');
+      toast.success(t.checkout.toast.sent);
       setTimeout(() => {
         clearCart(); setStep('cart'); setCustomer(defaultCustomer); setLoading(false);
       }, 1500);
-    } catch { toast.error('Gagal membuka WhatsApp'); setLoading(false); }
+    } catch { toast.error(t.checkout.toast.failed); setLoading(false); }
   };
 
   const stepInfo = [
-    { id: 'cart', label: 'Keranjang', icon: ShoppingBag },
-    { id: 'info', label: 'Data Diri', icon: User },
-    { id: 'confirm', label: 'Konfirmasi', icon: Check },
+    { id: 'cart', label: t.checkout.steps.cart, icon: ShoppingBag },
+    { id: 'info', label: t.checkout.steps.info, icon: User },
+    { id: 'confirm', label: t.checkout.steps.confirm, icon: Check },
   ];
 
   return (
@@ -74,13 +76,13 @@ export default function CheckoutPage() {
             href="/products"
             className="inline-flex items-center gap-1.5 text-amber-600/70 hover:text-amber-700 text-sm mb-5 transition-colors"
           >
-            <ArrowLeft size={14} /> Kembali ke Menu
+            <ArrowLeft size={14} /> {t.checkout.backToMenu}
           </Link>
           <h1 className="font-display text-3xl sm:text-4xl font-bold mb-1">
-            <span className="text-amber-950">Checkout </span>
-            <span className="gradient-text">Pesanan</span>
+            <span className="text-amber-950">{t.checkout.title1} </span>
+            <span className="gradient-text">{t.checkout.title2}</span>
           </h1>
-          <p className="text-amber-800/55 text-sm">Konfirmasi pesanan dan kirim ke WhatsApp</p>
+          <p className="text-amber-800/55 text-sm">{t.checkout.subtitle}</p>
         </motion.div>
 
         {/* Step indicator */}
@@ -130,7 +132,7 @@ export default function CheckoutPage() {
               <div className="bg-white rounded-2xl border border-amber-100 overflow-hidden mb-4 shadow-sm">
                 <div className="px-5 py-4 border-b border-amber-100 flex items-center justify-between">
                   <h2 className="font-display font-bold text-amber-950 flex items-center gap-2 text-base">
-                    <ShoppingBag size={16} className="text-amber-600" /> Ringkasan Pesanan
+                    <ShoppingBag size={16} className="text-amber-600" /> {t.checkout.orderSummary}
                   </h2>
                   <span className="text-amber-600/60 text-sm">{totalItems} item</span>
                 </div>
@@ -138,9 +140,9 @@ export default function CheckoutPage() {
                 {items.length === 0 ? (
                   <div className="p-10 text-center">
                     <div className="text-5xl mb-3">🛒</div>
-                    <p className="text-amber-800/50 text-sm mb-4">Keranjang masih kosong</p>
+                    <p className="text-amber-800/50 text-sm mb-4">{t.checkout.emptyCart}</p>
                     <Link href="/products">
-                      <button className="btn-primary px-5 py-2.5 text-sm font-bold">Lihat Menu</button>
+                      <button className="btn-primary px-5 py-2.5 text-sm font-bold">{t.cart.seeMenu}</button>
                     </Link>
                   </div>
                 ) : (
@@ -190,11 +192,11 @@ export default function CheckoutPage() {
               {items.length > 0 && (
                 <div className="bg-amber-50 rounded-2xl border border-amber-100 p-4 mb-4">
                   <div className="flex justify-between text-sm text-amber-700/60 mb-1.5">
-                    <span>Subtotal ({totalItems} item)</span>
+                    <span>{t.checkout.subtotal} ({totalItems} {t.cart.item})</span>
                     <span>{formatCurrency(totalPrice)}</span>
                   </div>
                   <div className="flex justify-between items-center pt-2 border-t border-amber-200/50">
-                    <span className="font-display font-bold text-amber-950">Total</span>
+                    <span className="font-display font-bold text-amber-950">{t.checkout.total}</span>
                     <span className="font-display text-xl font-bold gradient-text">{formatCurrency(totalPrice)}</span>
                   </div>
                 </div>
@@ -207,7 +209,7 @@ export default function CheckoutPage() {
                 disabled={items.length === 0}
                 className="w-full btn-primary py-3.5 font-bold flex items-center justify-center gap-2 shadow-md disabled:opacity-40 disabled:cursor-not-allowed text-sm sm:text-base"
               >
-                Lanjut Isi Data Diri <ChevronRight size={15} />
+                {t.checkout.continueToInfo} <ChevronRight size={15} />
               </motion.button>
             </motion.div>
           )}
@@ -224,17 +226,17 @@ export default function CheckoutPage() {
             >
               <div className="bg-white rounded-2xl border border-amber-100 p-5 sm:p-6 space-y-5 shadow-sm">
                 <h2 className="font-display font-bold text-amber-950 flex items-center gap-2">
-                  <User size={16} className="text-amber-600" /> Data Pemesan
+                  <User size={16} className="text-amber-600" /> {t.checkout.formTitle}
                 </h2>
 
                 {/* Name */}
                 <div>
-                  <label className="text-amber-700/60 text-xs font-semibold uppercase tracking-wider mb-1.5 block">Nama Lengkap *</label>
+                  <label className="text-amber-700/60 text-xs font-semibold uppercase tracking-wider mb-1.5 block">{t.checkout.name}</label>
                   <div className="relative">
                     <User size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-500/60" />
                     <input
                       type="text" value={customer.name} onChange={e => updateField('name', e.target.value)}
-                      placeholder="Masukkan nama lengkap"
+                      placeholder={t.checkout.namePlaceholder}
                       className="w-full pl-10 pr-4 py-3 rounded-xl input-field text-sm"
                     />
                   </div>
@@ -242,12 +244,12 @@ export default function CheckoutPage() {
 
                 {/* Phone */}
                 <div>
-                  <label className="text-amber-700/60 text-xs font-semibold uppercase tracking-wider mb-1.5 block">Nomor HP / WhatsApp *</label>
+                  <label className="text-amber-700/60 text-xs font-semibold uppercase tracking-wider mb-1.5 block">{t.checkout.phone}</label>
                   <div className="relative">
                     <Phone size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-500/60" />
                     <input
                       type="tel" value={customer.phone} onChange={e => updateField('phone', e.target.value)}
-                      placeholder="0812-3456-7890"
+                      placeholder={t.checkout.phonePlaceholder}
                       className="w-full pl-10 pr-4 py-3 rounded-xl input-field text-sm"
                     />
                   </div>
@@ -255,7 +257,7 @@ export default function CheckoutPage() {
 
                 {/* Delivery method */}
                 <div>
-                  <label className="text-amber-700/60 text-xs font-semibold uppercase tracking-wider mb-2 block">Metode Pengambilan *</label>
+                  <label className="text-amber-700/60 text-xs font-semibold uppercase tracking-wider mb-2 block">{t.checkout.method}</label>
                   <div className="grid grid-cols-2 gap-3">
                     {(['pickup', 'delivery'] as const).map(method => (
                       <button
@@ -268,7 +270,7 @@ export default function CheckoutPage() {
                         }`}
                         style={customer.deliveryMethod === method ? { background: 'linear-gradient(135deg, #D97706, #F59E0B)' } : {}}
                       >
-                        {method === 'pickup' ? <><Package size={14} /> Ambil Sendiri</> : <><Truck size={14} /> Delivery</>}
+                        {method === 'pickup' ? <><Package size={14} /> {t.checkout.pickup}</> : <><Truck size={14} /> {t.checkout.delivery}</>}
                       </button>
                     ))}
                   </div>
@@ -282,12 +284,12 @@ export default function CheckoutPage() {
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
                     >
-                      <label className="text-amber-700/60 text-xs font-semibold uppercase tracking-wider mb-1.5 block">Alamat Lengkap *</label>
+                      <label className="text-amber-700/60 text-xs font-semibold uppercase tracking-wider mb-1.5 block">{t.checkout.address}</label>
                       <div className="relative">
                         <MapPin size={14} className="absolute left-3.5 top-3.5 text-amber-500/60" />
                         <textarea
                           value={customer.address} onChange={e => updateField('address', e.target.value)}
-                          placeholder="Jl. Contoh No. 1, RT/RW, Kelurahan, Kecamatan, Kota"
+                          placeholder={t.checkout.addressPlaceholder}
                           rows={3}
                           className="w-full pl-10 pr-4 py-3 rounded-xl input-field text-sm resize-none"
                         />
@@ -298,12 +300,12 @@ export default function CheckoutPage() {
 
                 {/* Note */}
                 <div>
-                  <label className="text-amber-700/60 text-xs font-semibold uppercase tracking-wider mb-1.5 block">Catatan (Opsional)</label>
+                  <label className="text-amber-700/60 text-xs font-semibold uppercase tracking-wider mb-1.5 block">{t.checkout.note}</label>
                   <div className="relative">
                     <FileText size={14} className="absolute left-3.5 top-3.5 text-amber-500/60" />
                     <textarea
                       value={customer.note} onChange={e => updateField('note', e.target.value)}
-                      placeholder="Kurang manis, tambah es, dll."
+                      placeholder={t.checkout.notePlaceholder}
                       rows={2}
                       className="w-full pl-10 pr-4 py-3 rounded-xl input-field text-sm resize-none"
                     />
@@ -313,14 +315,14 @@ export default function CheckoutPage() {
 
               <div className="flex gap-3">
                 <button onClick={() => setStep('cart')} className="btn-outline flex items-center gap-1.5 px-5 py-3.5 text-sm font-semibold">
-                  <ArrowLeft size={13} /> Kembali
+                  <ArrowLeft size={13} /> {t.checkout.back}
                 </button>
                 <motion.button
                   whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}
                   onClick={() => validateStep2() && setStep('confirm')}
                   className="flex-1 btn-primary py-3.5 font-bold flex items-center justify-center gap-2 shadow-md text-sm"
                 >
-                  Lihat Ringkasan <ChevronRight size={14} />
+                  {t.checkout.viewSummary} <ChevronRight size={14} />
                 </motion.button>
               </div>
             </motion.div>
@@ -340,7 +342,7 @@ export default function CheckoutPage() {
               <div className="bg-white rounded-2xl border border-amber-100 overflow-hidden shadow-sm">
                 <div className="px-5 py-4 border-b border-amber-50">
                   <h2 className="font-display font-bold text-amber-950 flex items-center gap-2 text-base">
-                    <ShoppingBag size={16} className="text-amber-600" /> Pesanan Anda
+                    <ShoppingBag size={16} className="text-amber-600" /> {t.checkout.yourOrder}
                   </h2>
                 </div>
                 <div className="divide-y divide-amber-50">
@@ -370,7 +372,7 @@ export default function CheckoutPage() {
                   ))}
                 </div>
                 <div className="px-5 py-4 border-t border-amber-100 bg-amber-50 flex justify-between items-center">
-                  <span className="font-display font-bold text-amber-950">Total</span>
+                  <span className="font-display font-bold text-amber-950">{t.checkout.total}</span>
                   <span className="font-display text-xl font-bold gradient-text">{formatCurrency(totalPrice)}</span>
                 </div>
               </div>
@@ -378,14 +380,14 @@ export default function CheckoutPage() {
               {/* Customer info */}
               <div className="bg-white rounded-2xl border border-amber-100 p-5 space-y-3 shadow-sm">
                 <h2 className="font-display font-bold text-amber-950 flex items-center gap-2 text-base">
-                  <User size={16} className="text-amber-600" /> Info Pemesan
+                  <User size={16} className="text-amber-600" /> {t.checkout.orderInfo}
                 </h2>
                 {[
-                  { icon: User, label: 'Nama', value: customer.name },
-                  { icon: Phone, label: 'Nomor HP', value: customer.phone },
-                  { icon: customer.deliveryMethod === 'pickup' ? Package : Truck, label: 'Metode', value: customer.deliveryMethod === 'pickup' ? 'Ambil Sendiri (Pickup)' : 'Delivery' },
-                  ...(customer.deliveryMethod === 'delivery' && customer.address ? [{ icon: MapPin, label: 'Alamat', value: customer.address }] : []),
-                  ...(customer.note ? [{ icon: FileText, label: 'Catatan', value: customer.note }] : []),
+                  { icon: User, label: t.checkout.infoName, value: customer.name },
+                  { icon: Phone, label: t.checkout.infoPhone, value: customer.phone },
+                  { icon: customer.deliveryMethod === 'pickup' ? Package : Truck, label: t.checkout.infoMethod, value: customer.deliveryMethod === 'pickup' ? t.checkout.pickupLabel : t.checkout.delivery },
+                  ...(customer.deliveryMethod === 'delivery' && customer.address ? [{ icon: MapPin, label: t.checkout.infoAddress, value: customer.address }] : []),
+                  ...(customer.note ? [{ icon: FileText, label: t.checkout.infoNote, value: customer.note }] : []),
                 ].map(({ icon: Icon, label, value }) => (
                   <div key={label} className="flex items-start gap-3">
                     <Icon size={13} className="text-amber-500 mt-0.5 flex-shrink-0" />
@@ -401,13 +403,13 @@ export default function CheckoutPage() {
               <div className="rounded-2xl p-4 flex items-start gap-3" style={{ background: 'rgba(22,163,74,0.07)', border: '1.5px solid rgba(22,163,74,0.2)' }}>
                 <MessageCircle size={17} className="text-green-600 flex-shrink-0 mt-0.5" />
                 <p className="text-green-800/80 text-sm leading-relaxed">
-                  Klik tombol di bawah untuk mengirim pesanan ke WhatsApp. Kami akan segera konfirmasi pesananmu!
+                  {t.checkout.waNotice}
                 </p>
               </div>
 
               <div className="flex gap-3">
                 <button onClick={() => setStep('info')} className="btn-outline flex items-center gap-1.5 px-5 py-3.5 text-sm font-semibold">
-                  <ArrowLeft size={13} /> Kembali
+                  <ArrowLeft size={13} /> {t.checkout.back}
                 </button>
                 <motion.button
                   whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.97 }}
@@ -417,7 +419,7 @@ export default function CheckoutPage() {
                   style={{ background: loading ? 'rgba(22,163,74,0.5)' : 'linear-gradient(135deg, #16A34A, #15803D)', boxShadow: loading ? 'none' : '0 6px 20px rgba(22,163,74,0.3)' }}
                 >
                   <MessageCircle size={16} />
-                  {loading ? 'Membuka WhatsApp...' : 'Pesan via WhatsApp 🚀'}
+                  {loading ? t.checkout.sending : t.checkout.sendWA}
                 </motion.button>
               </div>
             </motion.div>

@@ -7,6 +7,7 @@ import { ShoppingCart, Plus, Weight, CheckCircle2, ChevronLeft, ChevronRight, Ch
 import { useCartStore } from '@/lib/store';
 import { Product } from '@/types';
 import { formatCurrency } from '@/lib/whatsapp';
+import { useLanguage } from '@/contexts/LanguageContext';
 import toast from 'react-hot-toast';
 
 interface Props {
@@ -20,15 +21,16 @@ const badgeClass: Record<string, string> = {
   'Best Seller': 'badge-best',
 };
 
-const stockConfig = {
-  ready:   { label: 'Tersedia',  Icon: CheckCircle, color: '#16A34A', bg: 'rgba(22,163,74,0.1)',  border: 'rgba(22,163,74,0.25)'  },
-  habis:   { label: 'Stok Habis', Icon: XCircle,    color: '#DC2626', bg: 'rgba(220,38,38,0.08)', border: 'rgba(220,38,38,0.22)'  },
-  open_po: { label: 'Open PO',   Icon: Clock3,      color: '#D97706', bg: 'rgba(217,119,6,0.1)',  border: 'rgba(217,119,6,0.25)'  },
-};
-
 export default function ProductCard({ product, index = 0 }: Props) {
   const cardRef = useRef<HTMLDivElement>(null);
   const { addItem, openCart } = useCartStore();
+  const { t } = useLanguage();
+
+  const stockConfig = {
+    ready:   { label: t.product.available,  Icon: CheckCircle, color: '#16A34A', bg: 'rgba(22,163,74,0.1)',  border: 'rgba(22,163,74,0.25)'  },
+    habis:   { label: t.product.outOfStock, Icon: XCircle,    color: '#DC2626', bg: 'rgba(220,38,38,0.08)', border: 'rgba(220,38,38,0.22)'  },
+    open_po: { label: t.product.openPO,    Icon: Clock3,      color: '#D97706', bg: 'rgba(217,119,6,0.1)',  border: 'rgba(217,119,6,0.25)'  },
+  };
   const [imgIndex, setImgIndex] = useState(0);
   const [imgDir, setImgDir] = useState(1);
 

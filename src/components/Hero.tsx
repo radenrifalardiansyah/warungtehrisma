@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Star, ShoppingBag, ChevronLeft, ChevronRight } from 'lucide-react';
 import logo from '@/assets/images/logo-tehrisma.jpeg';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 import imgOriOri100  from '@/assets/images/Keripik Kimpul 100g Original.png';
 import imgOriBBQ100  from '@/assets/images/Keripik Kimpul 100g BBQ Pedas.png';
@@ -71,34 +72,6 @@ const slides = [
   },
 ];
 
-const groupContent = {
-  keripik: {
-    title1: 'Keripik',
-    title2: 'Kimpul',
-    sub1: 'Gurih,',
-    sub2: 'Bikin Nagih!',
-    flavors: [
-      { emoji: '🥔', label: 'Original',  bg: 'bg-amber-100', text: 'text-amber-800' },
-      { emoji: '🌶️', label: 'BBQ Pedas', bg: 'bg-red-100',   text: 'text-red-700'   },
-      { emoji: '🌽', label: 'Jagung',    bg: 'bg-yellow-100', text: 'text-yellow-700' },
-    ],
-    desc: 'Keripik kimpul / talas balitung super renyah buatan Bogor. Tanpa pengawet, bahan pilihan, harga bersahabat mulai',
-    price: 'Rp 15.000',
-  },
-  mie: {
-    title1: 'Mie',
-    title2: 'Kremes',
-    sub1: 'Asli Gurihnya,',
-    sub2: 'Mantap Pedasnya!',
-    flavors: [
-      { emoji: '🍜', label: 'Original', bg: 'bg-orange-100', text: 'text-orange-800' },
-      { emoji: '🌶️', label: 'Pedas',    bg: 'bg-red-100',   text: 'text-red-700'    },
-    ],
-    desc: 'Mie kremes super crispy dengan bumbu rempah alami khas Bogor. Tanpa pengawet, cocok untuk cemilan kapan saja, mulai',
-    price: 'Rp 10.000',
-  },
-};
-
 const particles = ['🥔', '🌶️', '🌽', '✨', '⭐', '🌿', '💫'];
 
 function Particle({ index }: { index: number }) {
@@ -120,24 +93,48 @@ function Particle({ index }: { index: number }) {
 }
 
 
-const stats = [
-  { value: '23+', label: 'Terjual', icon: '📦' },
-  { value: '4.9★', label: 'Rating', icon: '⭐' },
-  { value: '5', label: 'Varian Produk', icon: '🛒' },
-  { value: 'Bogor', label: 'Lokasi', icon: '📍' },
-];
-
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: containerRef });
   const y = useTransform(scrollYProgress, [0, 1], [0, 180]);
   const opacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
+  const { t } = useLanguage();
 
   const [current, setCurrent] = useState(0);
   const [dir, setDir] = useState(1);
   const [paused, setPaused] = useState(false);
 
   const slide = slides[current];
+
+  const groupContent = {
+    keripik: {
+      title1: t.hero.keripik.title1, title2: t.hero.keripik.title2,
+      sub1: t.hero.keripik.sub1, sub2: t.hero.keripik.sub2,
+      flavors: [
+        { emoji: '🥔', label: t.hero.keripik.flavors[0], bg: 'bg-amber-100', text: 'text-amber-800' },
+        { emoji: '🌶️', label: t.hero.keripik.flavors[1], bg: 'bg-red-100',   text: 'text-red-700'   },
+        { emoji: '🌽', label: t.hero.keripik.flavors[2], bg: 'bg-yellow-100', text: 'text-yellow-700' },
+      ],
+      desc: t.hero.keripik.desc, price: 'Rp 15.000',
+    },
+    mie: {
+      title1: t.hero.mie.title1, title2: t.hero.mie.title2,
+      sub1: t.hero.mie.sub1, sub2: t.hero.mie.sub2,
+      flavors: [
+        { emoji: '🍜', label: t.hero.mie.flavors[0], bg: 'bg-orange-100', text: 'text-orange-800' },
+        { emoji: '🌶️', label: t.hero.mie.flavors[1], bg: 'bg-red-100',   text: 'text-red-700'    },
+      ],
+      desc: t.hero.mie.desc, price: 'Rp 10.000',
+    },
+  };
+
+  const stats = [
+    { value: '23+', label: t.hero.stats.sold, icon: '📦' },
+    { value: '4.9★', label: t.hero.stats.rating, icon: '⭐' },
+    { value: '5', label: t.hero.stats.variants, icon: '🛒' },
+    { value: 'Bogor', label: t.hero.stats.location, icon: '📍' },
+  ];
+
   const content = groupContent[slide.group as keyof typeof groupContent];
 
   const next = useCallback(() => {
@@ -214,7 +211,7 @@ export default function Hero() {
               <div className="relative w-7 h-7 rounded-full overflow-hidden border border-amber-300/60 flex-shrink-0">
                 <Image src={logo} alt="Teh Risma" fill className="object-cover" />
               </div>
-              Cemilan Teh Risma · Kota Bogor
+              {t.hero.brand}
             </motion.div>
 
             {/* Headline — berubah sesuai group produk */}
@@ -263,7 +260,7 @@ export default function Hero() {
                   transition={{ delay: 0.3 }}
                   className="text-amber-600/60 text-xs font-medium"
                 >
-                  + Paket Hemat tersedia
+                  {t.hero.savingsAvailable}
                 </motion.span>
               </motion.div>
             </AnimatePresence>
@@ -296,7 +293,7 @@ export default function Hero() {
                   className="btn-primary flex items-center justify-center gap-2 px-7 py-3.5 text-sm font-bold shadow-lg w-full sm:w-auto"
                 >
                   <ShoppingBag size={17} />
-                  Pesan Sekarang
+                  {t.hero.orderNow}
                   <ArrowRight size={15} />
                 </motion.button>
               </Link>
@@ -306,7 +303,7 @@ export default function Hero() {
                   whileTap={{ scale: 0.97 }}
                   className="btn-outline flex items-center justify-center gap-2 px-7 py-3.5 text-sm font-semibold w-full sm:w-auto"
                 >
-                  Lihat Semua Produk
+                  {t.hero.seeAll}
                 </motion.button>
               </Link>
             </motion.div>
@@ -322,7 +319,7 @@ export default function Hero() {
                 {[1,2,3,4,5].map(i => <Star key={i} size={14} className="text-amber-400 fill-amber-400" />)}
               </div>
               <span className="text-amber-700/60 text-sm font-medium">
-                4.9/5 · 9 penilaian · 23+ terjual di Shopee
+                {t.hero.ratingText}
               </span>
             </motion.div>
           </div>
@@ -457,7 +454,7 @@ export default function Hero() {
                 transition={{ duration: 3.5, repeat: Infinity, delay: 0.5 }}
                 className="absolute -left-6 top-8 bg-white rounded-2xl p-3 border border-amber-200 shadow-lg z-10"
               >
-                <p className="text-[10px] text-amber-600/60">Harga mulai</p>
+                <p className="text-[10px] text-amber-600/60">{t.hero.priceFrom}</p>
                 <p className="font-display text-sm font-bold text-amber-800">Rp 10.000</p>
               </motion.div>
 
@@ -470,7 +467,7 @@ export default function Hero() {
                 <div className="flex gap-0.5 mb-0.5">
                   {[1,2,3,4,5].map(s => <Star key={s} size={8} className="text-amber-400 fill-amber-400" />)}
                 </div>
-                <p className="text-[10px] text-amber-800/70 font-semibold">23+ Terjual</p>
+                <p className="text-[10px] text-amber-800/70 font-semibold">{t.hero.sold}</p>
               </motion.div>
             </div>
           </motion.div>
@@ -506,7 +503,7 @@ export default function Hero() {
         transition={{ duration: 2, repeat: Infinity }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-amber-500/50"
       >
-        <span className="text-xs">Scroll</span>
+        <span className="text-xs">{t.hero.scroll}</span>
         <div className="w-px h-8 bg-gradient-to-b from-amber-400/50 to-transparent" />
       </motion.div>
     </section>

@@ -5,22 +5,24 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { MapPin, Phone, Clock, Instagram, MessageCircle } from 'lucide-react';
 import { WHATSAPP_NUMBER } from '@/lib/whatsapp';
+import { useLanguage } from '@/contexts/LanguageContext';
 import logo from '@/assets/images/logo-tehrisma.jpeg';
 
-const quickLinks = [
-  { href: '/', label: 'Beranda' },
-  { href: '/products', label: 'Produk' },
-  { href: '/checkout', label: 'Checkout' },
-];
-
-const categories = [
-  { emoji: '🥔', label: 'Keripik Kimpul', href: '/products?category=keripik' },
-  { emoji: '🍜', label: 'Mie Kremes', href: '/products?category=mie' },
-  { emoji: '🍿', label: 'Snack Lainnya', href: '/products?category=snack' },
-  { emoji: '🎁', label: 'Paket Hemat', href: '/products?category=paket' },
-];
-
 export default function Footer() {
+  const { t } = useLanguage();
+
+  const quickLinks = [
+    { href: '/', label: t.footer.links.home },
+    { href: '/products', label: t.footer.links.products },
+    { href: '/checkout', label: t.footer.links.checkout },
+  ];
+
+  const categories = [
+    { emoji: '🥔', label: t.footer.categories.keripik, href: '/products?category=keripik' },
+    { emoji: '🍜', label: t.footer.categories.mie, href: '/products?category=mie' },
+    { emoji: '🍿', label: t.footer.categories.snack, href: '/products?category=snack' },
+    { emoji: '🎁', label: t.footer.categories.paket, href: '/products?category=paket' },
+  ];
   return (
     <footer className="relative bg-amber-800 overflow-hidden hidden md:block">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-500/60 to-transparent" />
@@ -44,8 +46,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-amber-50/90 text-sm leading-relaxed mb-5 max-w-xs">
-              Keripik Kimpul / Talas Balitung super renyah dari Bogor. Gurih, bikin nagih!
-              Tanpa pengawet, bahan pilihan, harga bersahabat.
+              {t.footer.desc}
             </p>
             <div className="flex gap-3">
               <a
@@ -89,7 +90,7 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
           >
-            <h4 className="font-display font-bold text-amber-100 mb-4 text-sm">Navigasi</h4>
+            <h4 className="font-display font-bold text-amber-100 mb-4 text-sm">{t.footer.navigation}</h4>
             <ul className="space-y-2.5">
               {quickLinks.map(link => (
                 <li key={link.href}>
@@ -112,7 +113,7 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ delay: 0.15 }}
           >
-            <h4 className="font-display font-bold text-amber-100 mb-4 text-sm">Varian Rasa</h4>
+            <h4 className="font-display font-bold text-amber-100 mb-4 text-sm">{t.footer.flavors}</h4>
             <ul className="space-y-2.5">
               {categories.map(cat => (
                 <li key={cat.label}>
@@ -135,7 +136,7 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
           >
-            <h4 className="font-display font-bold text-amber-100 mb-4 text-sm">Kontak</h4>
+            <h4 className="font-display font-bold text-amber-100 mb-4 text-sm">{t.footer.contact}</h4>
             <ul className="space-y-3">
               <li className="flex items-start gap-2.5">
                 <MapPin size={14} className="text-amber-100 mt-0.5 flex-shrink-0" />
@@ -151,7 +152,7 @@ export default function Footer() {
                     className="inline-flex items-center gap-1 mt-1.5 text-xs font-semibold text-amber-300 hover:text-white transition-colors"
                   >
                     <MapPin size={10} />
-                    Lihat di Google Maps →
+                    {t.footer.mapsLink}
                   </a>
                 </div>
               </li>
@@ -179,7 +180,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2.5">
                 <Clock size={14} className="text-amber-100 flex-shrink-0" />
-                <span className="text-amber-50/90 text-sm">Setiap Hari, 08.00 – 21.00</span>
+                <span className="text-amber-50/90 text-sm">{t.footer.hours}</span>
               </li>
             </ul>
           </motion.div>
@@ -187,13 +188,13 @@ export default function Footer() {
 
         <div className="mt-12 pt-6 border-t border-amber-600/60 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex flex-col items-center sm:items-start gap-0.5">
-            <p className="text-amber-50/85 text-sm">© 2026 Cemilan Teh Risma. Semua hak dilindungi.</p>
+            <p className="text-amber-50/85 text-sm">{t.footer.copyright}</p>
             <p className="text-amber-200/80 text-xs">PT. RMedia Production</p>
           </div>
           <div className="flex items-center gap-1.5 text-amber-50/75 text-sm">
-            <span>Dibuat dengan</span>
+            <span>{t.footer.madeWith}</span>
             <span className="text-red-400">♥</span>
-            <span>dari Bogor 🍟</span>
+            <span>{t.footer.madeFrom}</span>
           </div>
         </div>
       </div>
