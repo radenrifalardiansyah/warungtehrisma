@@ -15,6 +15,28 @@ import imgMiePdas150 from '@/assets/images/Mie Kremes 150g Pedas.png';
 
 const slides = [
   {
+    image: imgMieOri150,
+    name: 'Mie Kremes Original',
+    weight: '150g',
+    price: 'Rp 10.000',
+    badge: 'Best Seller',
+    badgeColor: '#C2410C',
+    glow: 'rgba(194,65,12,0.28)',
+    bg: 'from-orange-100 to-amber-50',
+    group: 'mie',
+  },
+  {
+    image: imgMiePdas150,
+    name: 'Mie Kremes Pedas',
+    weight: '150g',
+    price: 'Rp 10.000',
+    badge: 'Popular',
+    badgeColor: '#BE123C',
+    glow: 'rgba(190,18,60,0.25)',
+    bg: 'from-rose-100 to-pink-50',
+    group: 'mie',
+  },
+  {
     image: imgOriOri100,
     name: 'Keripik Kimpul Original',
     weight: '100g',
@@ -46,28 +68,6 @@ const slides = [
     glow: 'rgba(202,138,4,0.3)',
     bg: 'from-yellow-100 to-amber-50',
     group: 'keripik',
-  },
-  {
-    image: imgMieOri150,
-    name: 'Mie Kremes Original',
-    weight: '150g',
-    price: 'Rp 10.000',
-    badge: 'New',
-    badgeColor: '#C2410C',
-    glow: 'rgba(194,65,12,0.28)',
-    bg: 'from-orange-100 to-amber-50',
-    group: 'mie',
-  },
-  {
-    image: imgMiePdas150,
-    name: 'Mie Kremes Pedas',
-    weight: '150g',
-    price: 'Rp 10.000',
-    badge: 'New',
-    badgeColor: '#BE123C',
-    glow: 'rgba(190,18,60,0.25)',
-    bg: 'from-rose-100 to-pink-50',
-    group: 'mie',
   },
 ];
 
@@ -152,7 +152,7 @@ export default function Hero() {
 
   useEffect(() => {
     if (paused) return;
-    const t = setInterval(next, 3500);
+    const t = setInterval(next, 6000);
     return () => clearInterval(t);
   }, [paused, next]);
 
