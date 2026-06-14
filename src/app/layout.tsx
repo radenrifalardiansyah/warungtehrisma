@@ -16,14 +16,43 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Cemilan Teh Risma — Keripik Kimpul Gurih, Bikin Nagih!',
+  metadataBase: new URL('https://warungtehrisma-one.vercel.app'),
+  title: {
+    default: 'Cemilan Teh Risma — Keripik Kimpul & Mie Kremes Bogor',
+    template: '%s | Cemilan Teh Risma',
+  },
   description:
-    'Keripik Kimpul / Talas Balitung super renyah dari Bogor. Tersedia 3 varian rasa: Original, BBQ Pedas, dan Jagung Manis. Mulai Rp 26.400. Pesan lewat WhatsApp!',
-  keywords: ['keripik kimpul', 'cemilan teh risma', 'keripik talas', 'keripik bogor', 'keripik bbq', 'keripik jagung', 'cemilan renyah'],
+    'Toko cemilan khas Bogor: Keripik Kimpul Talas Balitung renyah (3 rasa) & Mie Kremes crispy. Halal, tanpa pengawet. Pesan langsung via WhatsApp, pengiriman ke seluruh Indonesia.',
+  keywords: [
+    'keripik kimpul', 'keripik talas', 'keripik bogor', 'cemilan teh risma',
+    'keripik kimpul original', 'keripik kimpul bbq pedas', 'keripik kimpul jagung',
+    'mie kremes', 'mie kremes bogor', 'mie kremes crispy', 'cemilan halal',
+    'oleh oleh bogor', 'snack bogor', 'cemilan renyah', 'jual keripik kimpul',
+    'beli keripik kimpul', 'cemilan tanpa pengawet', 'warung teh risma',
+  ],
+  authors: [{ name: 'Warung Teh Risma' }],
+  creator: 'Warung Teh Risma',
+  publisher: 'Warung Teh Risma',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
   openGraph: {
-    title: 'Cemilan Teh Risma — Keripik Kimpul',
-    description: 'Gurih, Bikin Nagih! Keripik Kimpul Talas Balitung dari Bogor',
+    title: 'Cemilan Teh Risma — Keripik Kimpul & Mie Kremes Bogor',
+    description: 'Keripik Kimpul renyah & Mie Kremes crispy khas Bogor. Halal, tanpa pengawet. Pesan via WhatsApp!',
     type: 'website',
+    locale: 'id_ID',
+    siteName: 'Cemilan Teh Risma',
+    url: 'https://warungtehrisma-one.vercel.app',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Cemilan Teh Risma — Keripik Kimpul & Mie Kremes Bogor',
+    description: 'Keripik Kimpul renyah & Mie Kremes crispy khas Bogor. Halal, tanpa pengawet.',
+  },
+  alternates: {
+    canonical: 'https://warungtehrisma-one.vercel.app',
   },
 };
 
