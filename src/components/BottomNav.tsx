@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, LayoutGrid, ShoppingCart, CreditCard, Users } from 'lucide-react';
+import { Home, LayoutGrid, ShoppingCart, MapPin, Users } from 'lucide-react';
 import { useCartStore } from '@/lib/store';
 
 const pages = [
@@ -13,7 +13,7 @@ const pages = [
 ];
 
 const pageRight = [
-  { href: '/checkout', label: 'Bayar', icon: CreditCard },
+  { href: '/kontak', label: 'Kontak', icon: MapPin },
 ];
 
 export default function BottomNav() {
