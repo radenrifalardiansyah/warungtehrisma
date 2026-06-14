@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import {
   ShoppingBag, MessageCircle, ArrowLeft, User, Phone, MapPin,
   FileText, Package, Truck, Check, ChevronRight, Trash2, Plus, Minus
@@ -146,11 +147,23 @@ export default function CheckoutPage() {
                   <div className="divide-y divide-amber-50">
                     {items.map(item => (
                       <motion.div key={item.product.id} layout className="flex items-center gap-3 px-5 py-3.5">
-                        <div
-                          className="w-11 h-11 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
-                          style={{ background: `radial-gradient(circle, ${item.product.bgColor}15, transparent)` }}
-                        >
-                          {item.product.emoji}
+                        <div className="w-11 h-11 rounded-xl overflow-hidden flex-shrink-0 border border-amber-100">
+                          {item.product.images?.[0] ? (
+                            <Image
+                              src={item.product.images[0]}
+                              alt={item.product.name}
+                              width={44}
+                              height={44}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div
+                              className="w-full h-full flex items-center justify-center text-xl"
+                              style={{ background: `radial-gradient(circle, ${item.product.bgColor}15, transparent)` }}
+                            >
+                              {item.product.emoji}
+                            </div>
+                          )}
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="font-semibold text-amber-950 text-sm truncate">{item.product.name}</p>
@@ -333,7 +346,21 @@ export default function CheckoutPage() {
                 <div className="divide-y divide-amber-50">
                   {items.map(item => (
                     <div key={item.product.id} className="flex items-center gap-3 px-5 py-3">
-                      <span className="text-xl">{item.product.emoji}</span>
+                      <div className="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0 border border-amber-100">
+                        {item.product.images?.[0] ? (
+                          <Image
+                            src={item.product.images[0]}
+                            alt={item.product.name}
+                            width={40}
+                            height={40}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-xl">
+                            {item.product.emoji}
+                          </div>
+                        )}
+                      </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-amber-950 text-sm font-semibold truncate">{item.product.name}</p>
                         <p className="text-amber-700/55 text-xs">{formatCurrency(item.product.price)} × {item.quantity}</p>

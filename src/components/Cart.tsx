@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import { X, ShoppingCart, Plus, Minus, Trash2, ArrowRight, ShoppingBag } from 'lucide-react';
 import { useCartStore } from '@/lib/store';
 import { formatCurrency } from '@/lib/whatsapp';
@@ -116,14 +117,23 @@ export default function Cart() {
                       className="bg-white rounded-2xl p-3.5 border border-amber-100 hover:border-amber-200 transition-colors shadow-sm"
                     >
                       <div className="flex items-start gap-3">
-                        <div
-                          className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
-                          style={{
-                            background: `radial-gradient(circle, ${item.product.bgColor}18, transparent)`,
-                            border: `1px solid ${item.product.bgColor}20`,
-                          }}
-                        >
-                          {item.product.emoji}
+                        <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 border border-amber-100">
+                          {item.product.images?.[0] ? (
+                            <Image
+                              src={item.product.images[0]}
+                              alt={item.product.name}
+                              width={48}
+                              height={48}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div
+                              className="w-full h-full flex items-center justify-center text-2xl"
+                              style={{ background: `radial-gradient(circle, ${item.product.bgColor}18, transparent)` }}
+                            >
+                              {item.product.emoji}
+                            </div>
+                          )}
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between gap-1">
