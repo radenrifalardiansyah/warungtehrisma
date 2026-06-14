@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion, useMotionValue, useTransform, useSpring, AnimatePresence } from 'framer-motion';
-import { ShoppingCart, Plus, Weight, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ShoppingCart, Plus, Weight, CheckCircle2, ChevronLeft, ChevronRight, CheckCircle, XCircle, Clock3 } from 'lucide-react';
 import { useCartStore } from '@/lib/store';
 import { Product } from '@/types';
 import { formatCurrency } from '@/lib/whatsapp';
@@ -18,6 +18,12 @@ const badgeClass: Record<string, string> = {
   Popular: 'badge-popular',
   New: 'badge-new',
   'Best Seller': 'badge-best',
+};
+
+const stockConfig = {
+  ready:   { label: 'Tersedia',  Icon: CheckCircle, color: '#16A34A', bg: 'rgba(22,163,74,0.1)',  border: 'rgba(22,163,74,0.25)'  },
+  habis:   { label: 'Stok Habis', Icon: XCircle,    color: '#DC2626', bg: 'rgba(220,38,38,0.08)', border: 'rgba(220,38,38,0.22)'  },
+  open_po: { label: 'Open PO',   Icon: Clock3,      color: '#D97706', bg: 'rgba(217,119,6,0.1)',  border: 'rgba(217,119,6,0.25)'  },
 };
 
 export default function ProductCard({ product, index = 0 }: Props) {
@@ -41,7 +47,11 @@ export default function ProductCard({ product, index = 0 }: Props) {
     y.set(e.clientY - rect.top - rect.height / 2);
   };
 
+  const isAvailable = product.stock === 'ready' || product.stock === 'open_po';
+  const stock = stockConfig[product.stock];
+
   const handleAdd = () => {
+    if (!isAvailable) return;
     addItem(product);
     toast.success(`${product.name} (${product.weight}) ditambahkan!`, { icon: product.emoji });
     openCart();
@@ -98,6 +108,22 @@ export default function ProductCard({ product, index = 0 }: Props) {
           {product.weight}
         </span>
       </div>
+
+      {/* Stock badge — bottom-left of image */}
+      <div className="absolute bottom-3 left-3 z-10">
+        <span
+          className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold shadow-sm"
+          style={{ background: stock.bg, border: `1px solid ${stock.border}`, color: stock.color }}
+        >
+          <stock.Icon size={10} />
+          {stock.label}
+        </span>
+      </div>
+
+      {/* Overlay habis */}
+      {product.stock === 'habis' && (
+        <div className="absolute inset-0 z-[5] rounded-2xl" style={{ background: 'rgba(255,251,245,0.55)' }} />
+      )}
 
       {/* Image area */}
       <div
@@ -215,10 +241,15 @@ export default function ProductCard({ product, index = 0 }: Props) {
             </p>
           </div>
           <motion.button
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.92 }}
+            whileHover={isAvailable ? { scale: 1.08 } : {}}
+            whileTap={isAvailable ? { scale: 0.92 } : {}}
             onClick={handleAdd}
-            className="btn-primary flex items-center gap-1.5 px-4 py-2.5 text-sm font-bold shadow-md flex-shrink-0"
+            disabled={!isAvailable}
+            className={`flex items-center gap-1.5 px-4 py-2.5 text-sm font-bold shadow-md flex-shrink-0 rounded-xl transition-all ${
+              isAvailable
+                ? 'btn-primary'
+                : 'bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed'
+            }`}
           >
             <Plus size={14} />
             <ShoppingCart size={13} />

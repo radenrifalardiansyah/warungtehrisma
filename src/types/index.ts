@@ -11,6 +11,7 @@ export interface Product {
   images?: StaticImageData[];
   category: 'keripik' | 'mie' | 'snack' | 'paket';
   badge?: 'Popular' | 'New' | 'Best Seller';
+  stock: 'ready' | 'habis' | 'open_po';
   gradient: string;
   bgColor: string;
   weight: string;
