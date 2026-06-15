@@ -271,7 +271,7 @@ export default function ProductDetailPage() {
       <Cart />
 
       {/* Mobile sticky top bar */}
-      <div className="sticky top-0 z-30 bg-amber-50/90 backdrop-blur-md border-b border-amber-100 md:hidden">
+      <div className="sticky top-16 z-30 bg-amber-50/90 backdrop-blur-md border-b border-amber-100 md:hidden">
         <div className="flex items-center gap-3 px-4 h-14">
           <button
             onClick={() => router.back()}
@@ -289,7 +289,7 @@ export default function ProductDetailPage() {
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.32, ease: [0.32, 0.72, 0, 1] }}
-        className="pb-28 md:pb-16"
+        className="pt-16 md:pt-20 pb-28 md:pb-16"
       >
         {/* Desktop breadcrumb */}
         <div className="hidden md:block max-w-5xl mx-auto px-8 pt-6 pb-4">
