@@ -231,12 +231,7 @@ export default function PanduanPage() {
 
 function StepList({ steps, color }: { steps: typeof orderSteps.id; color: string }) {
   return (
-    <ol className="relative">
-      {/* Vertical line */}
-      <div
-        className="absolute left-[22px] top-10 bottom-10 w-0.5 hidden sm:block"
-        style={{ background: `linear-gradient(to bottom, ${color}40, ${color}10)` }}
-      />
+    <ol>
       <div className="space-y-4">
         {steps.map((step, i) => {
           const Icon = step.icon;
@@ -275,3 +270,4 @@ function StepList({ steps, color }: { steps: typeof orderSteps.id; color: string
     </ol>
   );
 }
+
