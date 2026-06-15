@@ -67,15 +67,15 @@ export default function Footer() {
                 <p className="font-display text-base font-bold gradient-text leading-none">Teh Risma</p>
               </div>
             </div>
-            <div className="relative mb-5 max-w-xs h-[78px] overflow-hidden">
+            <div className="mb-5 max-w-xs">
               <AnimatePresence mode="wait">
                 <motion.p
                   key={descIndex}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.5 }}
-                  className="text-amber-50/90 text-sm leading-relaxed absolute inset-0"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4 }}
+                  className="text-amber-50/90 text-sm leading-relaxed"
                 >
                   {footerDescs[locale]?.[descIndex] ?? footerDescs.id[descIndex]}
                 </motion.p>
@@ -231,7 +231,7 @@ export default function Footer() {
               >
                 PT. Eleven Digital Indonesia
               </a>
-              {' · didukung oleh PT. RMedia Production'}
+              {locale === 'en' ? ' · supported by PT. RMedia Production' : ' · didukung oleh PT. RMedia Production'}
             </p>
           </div>
           <div className="flex items-center gap-1.5 text-amber-50/75 text-sm">
@@ -254,7 +254,7 @@ export default function Footer() {
         >
           PT. Eleven Digital Indonesia
         </a>
-        <span className="text-amber-200/50">{' · didukung oleh PT. RMedia Production'}</span>
+        <span className="text-amber-200/50">{locale === 'en' ? ' · supported by PT. RMedia Production' : ' · didukung oleh PT. RMedia Production'}</span>
       </p>
     </div>
     </>
