@@ -102,6 +102,12 @@ export const translations = {
       otherDesc: 'Di iOS, Chrome & Firefox tidak support install PWA. Buka link ini di Safari.',
       copyLink: 'Salin link — buka di Safari', copied: 'Link berhasil disalin!',
     },
+    pwaAndroid: {
+      title: 'Pasang di Android kamu!',
+      desc: 'Akses Cemilan Teh Risma seperti aplikasi — lebih cepat & mudah.',
+      install: 'Pasang Sekarang',
+      later: 'Nanti Dulu',
+    },
     splash: {
       tagline: 'Gurih, Renyah, Bikin Nagih!',
     },
@@ -258,6 +264,12 @@ export const translations = {
       otherTitle: 'Can only be installed through', otherSafari: 'Safari',
       otherDesc: 'On iOS, Chrome & Firefox do not support PWA install. Open this link in Safari.',
       copyLink: 'Copy link — open in Safari', copied: 'Link copied!',
+    },
+    pwaAndroid: {
+      title: 'Install on your Android!',
+      desc: 'Access Cemilan Teh Risma like an app — faster & easier.',
+      install: 'Install Now',
+      later: 'Maybe Later',
     },
     splash: {
       tagline: 'Savory, Crunchy, Addictively Delicious!',
