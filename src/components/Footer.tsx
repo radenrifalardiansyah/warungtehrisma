@@ -23,9 +23,14 @@ export default function Footer() {
     { emoji: '🍿', label: t.footer.categories.snack, href: '/products?category=snack' },
     { emoji: '🎁', label: t.footer.categories.paket, href: '/products?category=paket' },
   ];
+  const C = '#a22200';
+  const Cm = 'rgba(162,34,0,0.7)';
+  const Cs = 'rgba(162,34,0,0.5)';
+  const border = 'rgba(162,34,0,0.2)';
+
   return (
-    <footer className="relative bg-amber-800 overflow-hidden hidden md:block">
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-500/60 to-transparent" />
+    <footer className="relative overflow-hidden hidden md:block" style={{ background: '#efc996' }}>
+      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${border}, transparent)` }} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
@@ -37,15 +42,15 @@ export default function Footer() {
             className="sm:col-span-2 lg:col-span-1"
           >
             <div className="flex items-center gap-3 mb-4">
-              <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-amber-700/60 shadow-lg flex-shrink-0">
+              <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 shadow-lg flex-shrink-0" style={{ borderColor: border }}>
                 <Image src={logo} alt="Cemilan Teh Risma" fill className="object-cover" />
               </div>
               <div>
-                <p className="font-display text-xl font-bold text-amber-200 leading-none">Cemilan</p>
-                <p className="font-display text-base font-bold text-amber-400 leading-none">Teh Risma</p>
+                <p className="font-display text-xl font-bold leading-none" style={{ color: C }}>Cemilan</p>
+                <p className="font-display text-base font-bold leading-none" style={{ color: C }}>Teh Risma</p>
               </div>
             </div>
-            <p className="text-amber-50/90 text-sm leading-relaxed mb-5 max-w-xs">
+            <p className="text-sm leading-relaxed mb-5 max-w-xs" style={{ color: Cm }}>
               {t.footer.desc}
             </p>
             <div className="flex gap-3">
@@ -90,15 +95,16 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
           >
-            <h4 className="font-display font-bold text-amber-100 mb-4 text-sm">{t.footer.navigation}</h4>
+            <h4 className="font-display font-bold mb-4 text-sm" style={{ color: C }}>{t.footer.navigation}</h4>
             <ul className="space-y-2.5">
               {quickLinks.map(link => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-amber-50/90 hover:text-white text-sm transition-colors flex items-center gap-2 group"
+                    className="text-sm transition-opacity hover:opacity-100 flex items-center gap-2 group"
+                    style={{ color: Cm }}
                   >
-                    <span className="w-1 h-1 rounded-full bg-amber-700 group-hover:bg-amber-500 transition-colors" />
+                    <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: Cs }} />
                     {link.label}
                   </Link>
                 </li>
@@ -113,13 +119,14 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ delay: 0.15 }}
           >
-            <h4 className="font-display font-bold text-amber-100 mb-4 text-sm">{t.footer.flavors}</h4>
+            <h4 className="font-display font-bold mb-4 text-sm" style={{ color: C }}>{t.footer.flavors}</h4>
             <ul className="space-y-2.5">
               {categories.map(cat => (
                 <li key={cat.label}>
                   <Link
                     href={cat.href}
-                    className="text-amber-50/90 hover:text-white text-sm transition-colors flex items-center gap-2"
+                    className="text-sm transition-opacity hover:opacity-100 flex items-center gap-2"
+                    style={{ color: Cm }}
                   >
                     <span>{cat.emoji}</span>
                     {cat.label}
@@ -136,12 +143,12 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
           >
-            <h4 className="font-display font-bold text-amber-100 mb-4 text-sm">{t.footer.contact}</h4>
+            <h4 className="font-display font-bold mb-4 text-sm" style={{ color: C }}>{t.footer.contact}</h4>
             <ul className="space-y-3">
               <li className="flex items-start gap-2.5">
-                <MapPin size={14} className="text-amber-100 mt-0.5 flex-shrink-0" />
+                <MapPin size={14} className="mt-0.5 flex-shrink-0" style={{ color: C }} />
                 <div>
-                  <p className="text-amber-50/90 text-sm leading-snug">
+                  <p className="text-sm leading-snug" style={{ color: Cm }}>
                     Jl. Batara Kp. Bubulak No. 54 RT01/RW03<br />
                     Kel. Ciluar, Kec. Bogor Utara 16156
                   </p>
@@ -149,7 +156,8 @@ export default function Footer() {
                     href="https://maps.app.goo.gl/h1AyYBaTH2tAqS588"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 mt-1.5 text-xs font-semibold text-amber-300 hover:text-white transition-colors"
+                    className="inline-flex items-center gap-1 mt-1.5 text-xs font-semibold transition-opacity hover:opacity-100"
+                    style={{ color: C }}
                   >
                     <MapPin size={10} />
                     {t.footer.mapsLink}
@@ -157,43 +165,45 @@ export default function Footer() {
                 </div>
               </li>
               <li className="flex items-center gap-2.5">
-                <Phone size={14} className="text-amber-100 flex-shrink-0" />
+                <Phone size={14} className="flex-shrink-0" style={{ color: C }} />
                 <a
                   href={`https://wa.me/${WHATSAPP_NUMBER}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-amber-50/90 hover:text-white text-sm transition-colors"
+                  className="text-sm transition-opacity hover:opacity-100"
+                  style={{ color: Cm }}
                 >
                   0812-1213-2014
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
-                <Instagram size={14} className="text-amber-100 flex-shrink-0" />
+                <Instagram size={14} className="flex-shrink-0" style={{ color: C }} />
                 <a
                   href="https://www.instagram.com/keripiktehrisma"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-amber-50/90 hover:text-white text-sm transition-colors"
+                  className="text-sm transition-opacity hover:opacity-100"
+                  style={{ color: Cm }}
                 >
                   @keripiktehrisma
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
-                <Clock size={14} className="text-amber-100 flex-shrink-0" />
-                <span className="text-amber-50/90 text-sm">{t.footer.hours}</span>
+                <Clock size={14} className="flex-shrink-0" style={{ color: C }} />
+                <span className="text-sm" style={{ color: Cm }}>{t.footer.hours}</span>
               </li>
             </ul>
           </motion.div>
         </div>
 
-        <div className="mt-12 pt-6 border-t border-amber-600/60 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3" style={{ borderTop: `1px solid ${border}` }}>
           <div className="flex flex-col items-center sm:items-start gap-0.5">
-            <p className="text-amber-50/85 text-sm">{t.footer.copyright}</p>
-            <p className="text-amber-200/80 text-xs">PT. RMedia Production</p>
+            <p className="text-sm" style={{ color: Cm }}>{t.footer.copyright}</p>
+            <p className="text-xs" style={{ color: Cs }}>PT. RMedia Production</p>
           </div>
-          <div className="flex items-center gap-1.5 text-amber-50/75 text-sm">
+          <div className="flex items-center gap-1.5 text-sm" style={{ color: Cm }}>
             <span>{t.footer.madeWith}</span>
-            <span className="text-red-400">♥</span>
+            <span style={{ color: C }}>♥</span>
             <span>{t.footer.madeFrom}</span>
           </div>
         </div>
