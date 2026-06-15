@@ -226,8 +226,8 @@ export default function Hero() {
                 <span className="text-amber-950">{content.title1} </span>
                 <span className="gradient-text">{content.title2}</span>
                 <br />
-                <span className="text-amber-800">{content.sub1} </span>
-                <span className="text-amber-600">{content.sub2}</span>
+                <span className="text-3xl sm:text-4xl lg:text-5xl text-amber-800">{content.sub1} </span>
+                <span className="text-3xl sm:text-4xl lg:text-5xl text-amber-600">{content.sub2}</span>
               </motion.h1>
             </AnimatePresence>
 
