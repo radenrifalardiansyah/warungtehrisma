@@ -11,12 +11,12 @@ import { useState, useEffect } from 'react';
 
 const footerDescs = {
   id: [
-    'Keripik Kimpul / Talas Balitung super renyah dari Bogor. Gurih, bikin nagih! Tanpa pengawet, bahan pilihan.',
-    'Mie Kremes crispy khas Bogor. Gurih, renyah, bikin ketagihan! Tanpa pengawet, dibuat dari bahan pilihan terbaik.',
+    'Keripik Kimpul renyah khas Bogor. Gurih, bikin nagih, tanpa pengawet.',
+    'Mie Kremes crispy khas Bogor. Gurih, renyah, bikin ketagihan. Tanpa pengawet.',
   ],
   en: [
-    'Super crunchy Kimpul / Taro chips from Bogor. Savory, addictively delicious! No preservatives, selected ingredients.',
-    'Crispy Mie Kremes from Bogor. Savory, crunchy, irresistibly good! No preservatives, made from the finest ingredients.',
+    'Crunchy Kimpul chips from Bogor. Savory, addictive, no preservatives.',
+    'Crispy Mie Kremes from Bogor. Savory, crunchy, irresistibly good.',
   ],
 };
 
@@ -67,7 +67,7 @@ export default function Footer() {
                 <p className="font-display text-base font-bold gradient-text leading-none">Teh Risma</p>
               </div>
             </div>
-            <div className="mb-5 max-w-xs">
+            <div className="mb-5 max-w-xs h-10 relative overflow-hidden">
               <AnimatePresence mode="wait">
                 <motion.p
                   key={descIndex}
@@ -75,7 +75,7 @@ export default function Footer() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.4 }}
-                  className="text-amber-50/90 text-sm leading-relaxed"
+                  className="text-amber-50/90 text-sm leading-relaxed absolute inset-0"
                 >
                   {footerDescs[locale]?.[descIndex] ?? footerDescs.id[descIndex]}
                 </motion.p>

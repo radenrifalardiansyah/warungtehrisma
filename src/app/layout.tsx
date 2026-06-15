@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast';
 import SplashScreen from '@/components/SplashScreen';
 import IOSInstallBanner from '@/components/IOSInstallBanner';
 import AndroidInstallBanner from '@/components/AndroidInstallBanner';
+import ScrollToTop from '@/components/ScrollToTop';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import './globals.css';
 
@@ -96,6 +97,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SplashScreen />
         <IOSInstallBanner />
         <AndroidInstallBanner />
+        <ScrollToTop />
         {children}
         <Toaster
           position="bottom-right"

@@ -4,7 +4,7 @@ export const translations = {
   id: {
     nav: {
       home: 'Beranda', menu: 'Menu', reseller: 'Reseller',
-      checkout: 'Checkout', cart: 'Keranjang', kontak: 'Kontak', guide: 'Panduan',
+      checkout: 'Checkout', cart: 'Keranjang', kontak: 'Kontak', guide: 'Panduan', credit: 'Credit', all: 'Semua',
     },
     hero: {
       brand: 'Cemilan Teh Risma · Kota Bogor',
@@ -178,7 +178,7 @@ export const translations = {
   en: {
     nav: {
       home: 'Home', menu: 'Menu', reseller: 'Reseller',
-      checkout: 'Checkout', cart: 'Cart', kontak: 'Contact', guide: 'Guide',
+      checkout: 'Checkout', cart: 'Cart', kontak: 'Contact', guide: 'Guide', credit: 'Credit', all: 'More',
     },
     hero: {
       brand: 'Cemilan Teh Risma · Bogor City',
