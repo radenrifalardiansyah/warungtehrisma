@@ -127,11 +127,14 @@ function SafariGuide({ t }: { t: Translation }) {
       </p>
 
       <div className="mb-3 rounded-xl overflow-hidden border border-gray-200 bg-gray-50">
-        <div className="flex items-center gap-2 px-3 py-1.5 border-b border-gray-200 bg-white">
-          <div className="flex-1 bg-gray-100 rounded-full px-3 py-1 flex items-center gap-1.5">
+        <div className="flex items-center justify-between px-3 py-1.5 border-b border-gray-200 bg-white">
+          <div className="flex-1 bg-gray-100 rounded-full px-3 py-1 flex items-center gap-1.5 min-w-0">
             <div className="w-2 h-2 rounded-full bg-green-400 flex-shrink-0" />
-            <span className="text-[9px] text-gray-400 truncate">warungtehrisma-one.vercel.app</span>
+            <span className="text-[9px] text-gray-500 truncate font-medium">cemilantehrisma.vercel.app</span>
           </div>
+          <span className="ml-2 flex-shrink-0 text-[8px] font-semibold text-amber-600 bg-amber-100 border border-amber-200 rounded px-1.5 py-0.5">
+            Contoh
+          </span>
         </div>
         <div className="flex items-center justify-around px-4 py-2 bg-white">
           <ChevronLeft size={18} className="text-gray-300" />
