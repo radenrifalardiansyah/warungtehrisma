@@ -291,7 +291,7 @@ export default function AdminPage() {
         </p>
 
         {/* Debug panel */}
-        {stats && (stats as Record<string, unknown>).debug && (
+        {stats && !!(stats as Record<string, unknown>).debug && (
           <details className="bg-gray-900 rounded-2xl overflow-hidden text-xs">
             <summary className="px-4 py-3 text-gray-400 cursor-pointer select-none font-mono">
               🔍 Debug — raw Vercel API response
