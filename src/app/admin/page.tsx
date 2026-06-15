@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import { LogOut, RefreshCw, MessageCircle, Eye, Smartphone, Monitor, TrendingUp, BarChart2 } from 'lucide-react';
+import { LogOut, RefreshCw, MessageCircle, Eye, Smartphone, Monitor, TrendingUp, BarChart2, Home } from 'lucide-react';
 
 const PAGE_LABELS: Record<string, string> = {
   '/':         'Beranda',
@@ -224,6 +224,10 @@ export default function AdminPage() {
             <span className="text-amber-400/60 text-xs ml-0.5">· Cemilan Teh Risma</span>
           </div>
           <div className="flex items-center gap-2">
+            <a href="/"
+              className="p-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-600 hover:bg-amber-100 transition-colors">
+              <Home size={15} />
+            </a>
             <button onClick={() => fetchStats()} disabled={loading}
               className="p-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-600 hover:bg-amber-100 transition-colors disabled:opacity-50">
               <RefreshCw size={15} className={loading ? 'animate-spin' : ''} />
@@ -380,23 +384,14 @@ export default function AdminPage() {
           Data akan terbuka di WhatsApp — tap Send untuk kirim ke nomor sendiri
         </p>
 
-        {/* Footer */}
-        <div className="border-t border-amber-100 pt-5 flex flex-col items-center gap-3">
-          <a
-            href="/"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white border border-amber-200 text-amber-700 text-sm font-semibold hover:bg-amber-50 transition-colors shadow-sm"
-          >
-            <span>🏪</span>
-            Lihat Halaman Utama
+        {/* Credit */}
+        <p className="text-amber-400/50 text-xs text-center pt-2 border-t border-amber-100">
+          © {new Date().getFullYear()} Cemilan Teh Risma · Dibuat oleh{' '}
+          <a href="https://rmediasolutions.id" target="_blank" rel="noopener noreferrer"
+            className="text-amber-500 hover:text-amber-700 transition-colors">
+            RMedia Solutions
           </a>
-          <p className="text-amber-400/50 text-xs text-center">
-            © {new Date().getFullYear()} Cemilan Teh Risma · Dibuat oleh{' '}
-            <a href="https://rmediasolutions.id" target="_blank" rel="noopener noreferrer"
-              className="text-amber-500 hover:text-amber-700 transition-colors">
-              RMedia Solutions
-            </a>
-          </p>
-        </div>
+        </p>
 
       </div>
     </div>
