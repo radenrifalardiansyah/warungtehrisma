@@ -143,17 +143,19 @@ export default function AdminPage() {
     const devArr   = (s?.devices as unknown[]) ?? [];
     const mobile   = (devArr.find((d: unknown) => (d as Record<string,string>).type === 'mobile')  as Record<string,number>|undefined)?.count ?? 0;
     const desktop  = (devArr.find((d: unknown) => (d as Record<string,string>).type === 'desktop') as Record<string,number>|undefined)?.count ?? 0;
-    const topPages = ((s?.paths as unknown[]) ?? []).slice(0, 3).map((p: unknown) => {
+    const topPages = ((s?.paths as unknown[]) ?? []).slice(0, 3).map((p: unknown, i: number) => {
       const pg = p as Record<string, unknown>;
-      return `• ${pageLabel(pg.path as string)}: ${pg.visitors} pengunjung`;
+      return `${i + 1}. ${pageLabel(pg.path as string)} — ${pg.visitors}x`;
     }).join('\n');
     const date = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
     const msg =
-      `📊 *Rekap Cemilan Teh Risma*\n📅 ${date}\n\n` +
-      `👥 Total Pengunjung: ${total}\n📄 Total Halaman Dibuka: ${pageViews}\n` +
-      `📱 Mobile: ${mobile}  💻 Desktop: ${desktop}\n\n` +
-      (topPages ? `🔥 *Halaman Terpopuler:*\n${topPages}\n\n` : '') +
-      `_Dikirim dari Dashboard Cemilan Teh Risma_`;
+      `*Rekap Cemilan Teh Risma*\n` +
+      `_${date}_\n\n` +
+      `*Pengunjung:* ${total}\n` +
+      `*Halaman Dibuka:* ${pageViews}\n` +
+      `*Mobile:* ${mobile}  |  *Desktop:* ${desktop}\n` +
+      (topPages ? `\n*Terpopuler:*\n${topPages}\n` : '') +
+      `\n_Dashboard Cemilan Teh Risma_`;
     window.open(`https://wa.me/6281212132014?text=${encodeURIComponent(msg)}`, '_blank');
   };
 

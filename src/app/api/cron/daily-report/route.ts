@@ -54,7 +54,7 @@ export async function GET(req: NextRequest) {
   const topPages = Object.entries(pageAgg)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 3)
-    .map(([key, count]) => `• ${PAGE_LABELS[key] ?? key}: ${count} pengunjung`)
+    .map(([key, count], i) => `${i + 1}. ${PAGE_LABELS[key] ?? key} — ${count}x`)
     .join('\n');
 
   const date = new Date().toLocaleDateString('id-ID', {
@@ -63,13 +63,13 @@ export async function GET(req: NextRequest) {
   });
 
   const msg =
-    `📊 *Rekap Cemilan Teh Risma*\n` +
-    `📅 ${date}\n\n` +
-    `👥 Total Pengunjung: ${visitorSet.size}\n` +
-    `📄 Total Halaman Dibuka: ${totalViews}\n` +
-    `📱 Mobile: ${totalMobile}  💻 Desktop: ${totalDesktop}\n\n` +
-    (topPages ? `🔥 *Halaman Terpopuler:*\n${topPages}\n\n` : '') +
-    `_Dikirim otomatis setiap malam 23.00 WIB_`;
+    `*Rekap Cemilan Teh Risma*\n` +
+    `_${date}_\n\n` +
+    `*Pengunjung:* ${visitorSet.size}\n` +
+    `*Halaman Dibuka:* ${totalViews}\n` +
+    `*Mobile:* ${totalMobile}  |  *Desktop:* ${totalDesktop}\n` +
+    (topPages ? `\n*Terpopuler:*\n${topPages}\n` : '') +
+    `\n_Rekap otomatis 23.00 WIB_`;
 
   const url = `https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${encodeURIComponent(msg)}&apikey=${apiKey}`;
   await fetch(url, { cache: 'no-store' });
