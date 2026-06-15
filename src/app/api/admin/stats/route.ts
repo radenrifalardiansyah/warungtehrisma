@@ -36,42 +36,47 @@ export async function GET(req: NextRequest) {
     return d.toISOString().slice(0, 10);
   });
 
-  const snapshots = await Promise.all(
-    days.map(day => getDb().collection('analytics').doc(day).get())
-  );
+  try {
+    const snapshots = await Promise.all(
+      days.map(day => getDb().collection('analytics').doc(day).get())
+    );
 
-  let pageViews = 0;
-  let mobile    = 0;
-  let desktop   = 0;
-  const pageAgg: Record<string, number> = {};
-  const visitorSet = new Set<string>();
+    let pageViews = 0;
+    let mobile    = 0;
+    let desktop   = 0;
+    const pageAgg: Record<string, number> = {};
+    const visitorSet = new Set<string>();
 
-  for (const snap of snapshots) {
-    if (!snap.exists) continue;
-    const data = snap.data()!;
-    pageViews += Number(data.views   ?? 0);
-    mobile    += Number(data.mobile  ?? 0);
-    desktop   += Number(data.desktop ?? 0);
+    for (const snap of snapshots) {
+      if (!snap.exists) continue;
+      const data = snap.data()!;
+      pageViews += Number(data.views   ?? 0);
+      mobile    += Number(data.mobile  ?? 0);
+      desktop   += Number(data.desktop ?? 0);
 
-    for (const key of Object.keys(data.visitors ?? {})) {
-      visitorSet.add(key);
+      for (const key of Object.keys(data.visitors ?? {})) {
+        visitorSet.add(key);
+      }
+      for (const [key, count] of Object.entries(data.pages ?? {})) {
+        pageAgg[key] = (pageAgg[key] ?? 0) + Number(count);
+      }
     }
-    for (const [key, count] of Object.entries(data.pages ?? {})) {
-      pageAgg[key] = (pageAgg[key] ?? 0) + Number(count);
-    }
+
+    const paths = Object.entries(PAGE_KEYS)
+      .map(([key, path]) => ({ path, visitors: pageAgg[key] ?? 0 }))
+      .filter(p => p.visitors > 0)
+      .sort((a, b) => b.visitors - a.visitors);
+
+    return NextResponse.json({
+      stats:   { visitors: visitorSet.size, pageViews },
+      devices: [
+        { type: 'mobile',  count: mobile  },
+        { type: 'desktop', count: desktop },
+      ],
+      paths,
+    });
+  } catch (err) {
+    console.error('[admin/stats] Firebase error:', err);
+    return NextResponse.json({ error: 'firebase_error', stats: null, paths: [], devices: [] });
   }
-
-  const paths = Object.entries(PAGE_KEYS)
-    .map(([key, path]) => ({ path, visitors: pageAgg[key] ?? 0 }))
-    .filter(p => p.visitors > 0)
-    .sort((a, b) => b.visitors - a.visitors);
-
-  return NextResponse.json({
-    stats:   { visitors: visitorSet.size, pageViews },
-    devices: [
-      { type: 'mobile',  count: mobile  },
-      { type: 'desktop', count: desktop },
-    ],
-    paths,
-  });
 }
