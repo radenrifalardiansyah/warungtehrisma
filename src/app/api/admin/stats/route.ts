@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 function isAuthed(req: NextRequest) {
-  const cookie = req.cookies.get('admin_auth')?.value ?? '';
-  return cookie === `${process.env.ADMIN_USERNAME}:${process.env.ADMIN_PASSWORD}`;
+  const cookie   = req.cookies.get('admin_auth')?.value ?? '';
+  const [cookieUser, ...rest] = cookie.split(':');
+  const cookiePass = rest.join(':');
+  const validUser  = (process.env.ADMIN_USERNAME ?? '').trim();
+  const validPass  = (process.env.ADMIN_PASSWORD ?? '').trim();
+  return !!validUser && cookieUser === validUser && cookiePass === validPass;
 }
 
 export async function GET(req: NextRequest) {

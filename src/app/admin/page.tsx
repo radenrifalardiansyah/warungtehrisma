@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import { LogOut, RefreshCw, MessageCircle, BarChart2, Eye, Smartphone, Monitor, TrendingUp } from 'lucide-react';
 
 const PAGE_LABELS: Record<string, string> = {
@@ -107,14 +108,10 @@ export default function AdminPage() {
     return (
       <div className="min-h-screen flex items-center justify-center px-4" style={{ background: '#FFFBF5' }}>
         <div className="w-full max-w-sm bg-white rounded-2xl shadow-xl border border-amber-100 p-8">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#D97706,#F59E0B)' }}>
-              <BarChart2 size={20} className="text-white" />
-            </div>
-            <div>
-              <p className="font-bold text-amber-900 text-sm">Dashboard Admin</p>
-              <p className="text-amber-600/60 text-xs">Cemilan Teh Risma</p>
-            </div>
+          <div className="flex flex-col items-center mb-6">
+            <Image src="/icon-192.png" alt="Cemilan Teh Risma" width={64} height={64} className="rounded-2xl shadow mb-3" />
+            <p className="font-bold text-amber-900 text-sm">Dashboard Admin</p>
+            <p className="text-amber-600/60 text-xs">Cemilan Teh Risma</p>
           </div>
 
           <form onSubmit={login} className="space-y-4">
@@ -169,10 +166,10 @@ export default function AdminPage() {
       {/* Header */}
       <div className="border-b border-amber-100 bg-white/80 backdrop-blur-md sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <BarChart2 size={18} className="text-amber-600" />
+          <div className="flex items-center gap-2.5">
+            <Image src="/icon-192.png" alt="Cemilan Teh Risma" width={28} height={28} className="rounded-lg" />
             <span className="font-bold text-amber-900 text-sm">Dashboard Admin</span>
-            <span className="text-amber-400/60 text-xs ml-1">· Cemilan Teh Risma</span>
+            <span className="text-amber-400/60 text-xs ml-0.5">· Cemilan Teh Risma</span>
           </div>
           <div className="flex items-center gap-2">
             <button onClick={fetchStats} disabled={loading}
