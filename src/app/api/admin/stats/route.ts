@@ -40,9 +40,22 @@ export async function GET(req: NextRequest) {
     fetch(`https://vercel.com/api/web/insights/devices?${params}`,       { headers: { Authorization: `Bearer ${token}` }, cache: 'no-store' }),
   ]);
 
-  const stats   = statsRes.ok   ? await statsRes.json()   : null;
-  const paths   = pathsRes.ok   ? await pathsRes.json()   : null;
-  const devices = devicesRes.ok ? await devicesRes.json() : null;
+  const statsRaw   = await statsRes.text();
+  const pathsRaw   = await pathsRes.text();
+  const devicesRaw = await devicesRes.text();
 
-  return NextResponse.json({ stats, paths, devices });
+  let stats: unknown   = null;
+  let paths: unknown   = null;
+  let devices: unknown = null;
+  try { stats   = JSON.parse(statsRaw);   } catch { /* ignore */ }
+  try { paths   = JSON.parse(pathsRaw);   } catch { /* ignore */ }
+  try { devices = JSON.parse(devicesRaw); } catch { /* ignore */ }
+
+  const debug = {
+    stats:   { status: statsRes.status,   ok: statsRes.ok,   body: statsRaw.slice(0, 2000) },
+    paths:   { status: pathsRes.status,   ok: pathsRes.ok,   body: pathsRaw.slice(0, 2000) },
+    devices: { status: devicesRes.status, ok: devicesRes.ok, body: devicesRaw.slice(0, 2000) },
+  };
+
+  return NextResponse.json({ stats, paths, devices, debug });
 }

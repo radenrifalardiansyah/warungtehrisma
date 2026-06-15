@@ -289,6 +289,18 @@ export default function AdminPage() {
         <p className="text-center text-amber-400/60 text-xs">
           Data akan terbuka di WhatsApp — tap Send untuk kirim ke nomor sendiri
         </p>
+
+        {/* Debug panel */}
+        {stats && (stats as Record<string, unknown>).debug && (
+          <details className="bg-gray-900 rounded-2xl overflow-hidden text-xs">
+            <summary className="px-4 py-3 text-gray-400 cursor-pointer select-none font-mono">
+              🔍 Debug — raw Vercel API response
+            </summary>
+            <pre className="px-4 pb-4 text-green-400 overflow-auto max-h-96 whitespace-pre-wrap break-all">
+              {JSON.stringify((stats as Record<string, unknown>).debug, null, 2)}
+            </pre>
+          </details>
+        )}
       </div>
     </div>
   );
