@@ -19,8 +19,8 @@ const orderSteps = {
   id: [
     { icon: Search,        title: 'Pilih Produk',          desc: 'Buka halaman Menu dan jelajahi semua produk kami. Klik kartu produk untuk melihat detail lengkap, gambar, dan spesifikasi.' },
     { icon: ShoppingCart,  title: 'Tambah ke Keranjang',   desc: 'Klik tombol "+" di kartu produk untuk menambahkannya ke keranjang. Kamu bisa tambah beberapa produk sekaligus.' },
-    { icon: ClipboardList, title: 'Cek Keranjang',         desc: 'Klik ikon keranjang di pojok kanan atas untuk melihat daftar pesananmu. Sesuaikan jumlah atau hapus item jika perlu.' },
-    { icon: FileText,      title: 'Mulai Checkout',        desc: 'Klik tombol "Checkout Sekarang" di keranjang untuk melanjutkan ke halaman konfirmasi pesanan.' },
+    { icon: ClipboardList, title: 'Periksa Keranjang',      desc: 'Klik ikon keranjang di pojok kanan atas untuk melihat daftar pesananmu. Sesuaikan jumlah atau hapus produk jika perlu.' },
+    { icon: FileText,      title: 'Mulai Pembayaran',      desc: 'Klik tombol "Checkout Sekarang" di keranjang untuk melanjutkan ke halaman konfirmasi pesanan.' },
     { icon: UserCheck,     title: 'Isi Data Diri',         desc: 'Masukkan nama lengkap, nomor HP aktif, dan alamat pengiriman. Pastikan nomor HP terhubung ke WhatsApp.' },
     { icon: Truck,         title: 'Pilih Pengiriman',      desc: 'Pilih metode pengiriman: Pickup (ambil langsung di Bogor) atau Delivery (kami atur pengiriman ke alamatmu).' },
     { icon: CheckCircle2,  title: 'Konfirmasi & Kirim',    desc: 'Review pesananmu, lalu klik "Konfirmasi via WhatsApp". Pesanan otomatis terkirim ke kami dan kami segera proses!' },
@@ -42,7 +42,7 @@ const resellerSteps = {
     { icon: FileText,      title: 'Isi Formulir',          desc: 'Lengkapi data diri: nama, kota, nomor HP WhatsApp, dan platform jualan yang kamu gunakan (Shopee, Instagram, dll).' },
     { icon: MessageCircle, title: 'Kirim via WhatsApp',    desc: 'Setelah formulir diisi, klik tombol "Daftar Reseller". Data kamu otomatis terkirim ke WhatsApp tim kami.' },
     { icon: Clock,         title: 'Tunggu Konfirmasi',     desc: 'Tim kami akan membalas dan memverifikasi data dalam 1×24 jam. Pastikan WhatsApp kamu aktif.' },
-    { icon: Gift,          title: 'Mulai Berjualan',       desc: 'Setelah disetujui, kamu langsung dapat harga spesial reseller, materi foto produk, dan caption siap pakai!' },
+    { icon: Gift,          title: 'Mulai Berjualan',       desc: 'Setelah disetujui, kamu langsung dapat harga spesial reseller, materi foto produk, dan teks promosi siap pakai!' },
   ],
   en: [
     { icon: BookOpen,      title: 'Open Reseller Page',    desc: 'Click the "Reseller" menu in the top or bottom navigation to open our reseller registration page.' },
@@ -61,7 +61,7 @@ export default function PanduanPage() {
   const rSteps = resellerSteps[locale] ?? resellerSteps.id;
 
   const tabs = [
-    { key: 'order',    label: locale === 'en' ? 'How to Order'   : 'Cara Order',           emoji: '🛒' },
+    { key: 'order',    label: locale === 'en' ? 'How to Order'   : 'Cara Memesan',         emoji: '🛒' },
     { key: 'reseller', label: locale === 'en' ? 'Join Reseller'  : 'Daftar Reseller',       emoji: '🤝' },
   ] as const;
 
@@ -176,7 +176,7 @@ export default function PanduanPage() {
               <div className="flex flex-wrap gap-2 mb-8">
                 {(locale === 'en'
                   ? ['Special reseller price', 'Ready product photos', 'WhatsApp support', 'No minimum order']
-                  : ['Harga reseller khusus', 'Foto produk siap pakai', 'Support via WhatsApp', 'Tanpa minimal order']
+                  : ['Harga reseller khusus', 'Foto produk siap pakai', 'Dukungan via WhatsApp', 'Tanpa minimal pemesanan']
                 ).map(b => (
                   <span key={b} className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-amber-200 rounded-full text-xs font-semibold text-amber-700 shadow-sm">
                     <CheckCircle2 size={11} className="text-green-500" /> {b}
