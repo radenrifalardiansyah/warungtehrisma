@@ -69,7 +69,7 @@ export async function GET(req: NextRequest) {
     `📄 Total Halaman Dibuka: ${totalViews}\n` +
     `📱 Mobile: ${totalMobile}  💻 Desktop: ${totalDesktop}\n\n` +
     (topPages ? `🔥 *Halaman Terpopuler:*\n${topPages}\n\n` : '') +
-    `_Dikirim otomatis setiap pagi 07.00 WIB_`;
+    `_Dikirim otomatis setiap malam 23.00 WIB_`;
 
   const url = `https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${encodeURIComponent(msg)}&apikey=${apiKey}`;
   await fetch(url, { cache: 'no-store' });
