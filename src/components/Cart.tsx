@@ -8,13 +8,14 @@ import { X, ShoppingCart, Plus, Minus, Trash2, ArrowRight, ShoppingBag } from 'l
 import { useCartStore } from '@/lib/store';
 import { formatCurrency } from '@/lib/whatsapp';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { getProductLocale } from '@/lib/product-translations';
 
 export default function Cart() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, getTotalItems, getTotalPrice } =
     useCartStore();
   const totalItems = getTotalItems();
   const totalPrice = getTotalPrice();
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
 
   useEffect(() => {
     useCartStore.persist.rehydrate();
@@ -108,7 +109,9 @@ export default function Cart() {
                     </Link>
                   </motion.div>
                 ) : (
-                  items.map(item => (
+                  items.map(item => {
+                    const lp = getProductLocale(item.product.id, locale, item.product);
+                    return (
                     <motion.div
                       key={item.product.id}
                       layout
@@ -123,7 +126,7 @@ export default function Cart() {
                           {item.product.images?.[0] ? (
                             <Image
                               src={item.product.images[0]}
-                              alt={item.product.name}
+                              alt={lp.name}
                               width={48}
                               height={48}
                               className="w-full h-full object-cover"
@@ -140,7 +143,7 @@ export default function Cart() {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between gap-1">
                             <p className="font-display text-sm font-semibold text-amber-950 leading-tight line-clamp-2">
-                              {item.product.name}
+                              {lp.name}
                             </p>
                             <button
                               onClick={() => removeItem(item.product.id)}
@@ -182,7 +185,7 @@ export default function Cart() {
                         </div>
                       </div>
                     </motion.div>
-                  ))
+                  );})
                 )}
               </AnimatePresence>
             </div>

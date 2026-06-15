@@ -16,6 +16,7 @@ import { useCartStore } from '@/lib/store';
 import { formatCurrency, openWhatsApp } from '@/lib/whatsapp';
 import { CustomerInfo } from '@/types';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { getProductLocale } from '@/lib/product-translations';
 import toast from 'react-hot-toast';
 
 const defaultCustomer: CustomerInfo = {
@@ -27,7 +28,7 @@ export default function CheckoutPage() {
   const [customer, setCustomer] = useState<CustomerInfo>(defaultCustomer);
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState<'cart' | 'info' | 'confirm'>('cart');
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
 
   const totalItems = getTotalItems();
   const totalPrice = getTotalPrice();
@@ -134,7 +135,7 @@ export default function CheckoutPage() {
                   <h2 className="font-display font-bold text-amber-950 flex items-center gap-2 text-base">
                     <ShoppingBag size={16} className="text-amber-600" /> {t.checkout.orderSummary}
                   </h2>
-                  <span className="text-amber-600/60 text-sm">{totalItems} item</span>
+                  <span className="text-amber-600/60 text-sm">{totalItems} {t.cart.item}</span>
                 </div>
 
                 {items.length === 0 ? (
@@ -147,13 +148,15 @@ export default function CheckoutPage() {
                   </div>
                 ) : (
                   <div className="divide-y divide-amber-50">
-                    {items.map(item => (
+                    {items.map(item => {
+                    const lp = getProductLocale(item.product.id, locale, item.product);
+                    return (
                       <motion.div key={item.product.id} layout className="flex items-center gap-3 px-5 py-3.5">
                         <div className="w-11 h-11 rounded-xl overflow-hidden flex-shrink-0 border border-amber-100">
                           {item.product.images?.[0] ? (
                             <Image
                               src={item.product.images[0]}
-                              alt={item.product.name}
+                              alt={lp.name}
                               width={44}
                               height={44}
                               className="w-full h-full object-cover"
@@ -168,7 +171,7 @@ export default function CheckoutPage() {
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="font-semibold text-amber-950 text-sm truncate">{item.product.name}</p>
+                          <p className="font-semibold text-amber-950 text-sm truncate">{lp.name}</p>
                           <p className="text-amber-600 text-sm font-bold">{formatCurrency(item.product.price * item.quantity)}</p>
                         </div>
                         <div className="flex items-center gap-1.5">
@@ -184,7 +187,7 @@ export default function CheckoutPage() {
                           </button>
                         </div>
                       </motion.div>
-                    ))}
+                    );})}
                   </div>
                 )}
               </div>
@@ -346,13 +349,15 @@ export default function CheckoutPage() {
                   </h2>
                 </div>
                 <div className="divide-y divide-amber-50">
-                  {items.map(item => (
+                  {items.map(item => {
+                    const lp = getProductLocale(item.product.id, locale, item.product);
+                    return (
                     <div key={item.product.id} className="flex items-center gap-3 px-5 py-3">
                       <div className="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0 border border-amber-100">
                         {item.product.images?.[0] ? (
                           <Image
                             src={item.product.images[0]}
-                            alt={item.product.name}
+                            alt={lp.name}
                             width={40}
                             height={40}
                             className="w-full h-full object-cover"
@@ -364,12 +369,12 @@ export default function CheckoutPage() {
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-amber-950 text-sm font-semibold truncate">{item.product.name}</p>
+                        <p className="text-amber-950 text-sm font-semibold truncate">{lp.name}</p>
                         <p className="text-amber-700/55 text-xs">{formatCurrency(item.product.price)} × {item.quantity}</p>
                       </div>
                       <p className="text-amber-600 text-sm font-bold">{formatCurrency(item.product.price * item.quantity)}</p>
                     </div>
-                  ))}
+                  );})}
                 </div>
                 <div className="px-5 py-4 border-t border-amber-100 bg-amber-50 flex justify-between items-center">
                   <span className="font-display font-bold text-amber-950">{t.checkout.total}</span>

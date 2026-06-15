@@ -7,6 +7,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { ArrowRight, Star, ShoppingBag, ChevronLeft, ChevronRight } from 'lucide-react';
 import logo from '@/assets/images/logo-tehrisma.jpeg';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { getProductLocale } from '@/lib/product-translations';
 
 import imgOriOri100  from '@/assets/images/Keripik Kimpul 100g Original.png';
 import imgOriBBQ100  from '@/assets/images/Keripik Kimpul 100g BBQ Pedas.png';
@@ -16,6 +17,7 @@ import imgMiePdas150 from '@/assets/images/Mie Kremes 150g Pedas.png';
 
 const slides = [
   {
+    productId: 'mk-ori-150',
     image: imgMieOri150,
     name: 'Mie Kremes Original',
     weight: '150g',
@@ -27,6 +29,7 @@ const slides = [
     group: 'mie',
   },
   {
+    productId: 'mk-pdas-150',
     image: imgMiePdas150,
     name: 'Mie Kremes Pedas',
     weight: '150g',
@@ -38,6 +41,7 @@ const slides = [
     group: 'mie',
   },
   {
+    productId: 'kk-ori-100',
     image: imgOriOri100,
     name: 'Keripik Kimpul Original',
     weight: '100g',
@@ -49,6 +53,7 @@ const slides = [
     group: 'keripik',
   },
   {
+    productId: 'kk-bbq-100',
     image: imgOriBBQ100,
     name: 'Keripik Kimpul BBQ Pedas',
     weight: '100g',
@@ -60,6 +65,7 @@ const slides = [
     group: 'keripik',
   },
   {
+    productId: 'kk-jgn-100',
     image: imgOriJgn100,
     name: 'Keripik Kimpul Jagung',
     weight: '100g',
@@ -98,13 +104,14 @@ export default function Hero() {
   const { scrollYProgress } = useScroll({ target: containerRef });
   const y = useTransform(scrollYProgress, [0, 1], [0, 180]);
   const opacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
 
   const [current, setCurrent] = useState(0);
   const [dir, setDir] = useState(1);
   const [paused, setPaused] = useState(false);
 
   const slide = slides[current];
+  const slideDisplayName = getProductLocale(slide.productId, locale, { name: slide.name, description: '', details: [] }).name;
 
   const groupContent = {
     keripik: {
@@ -417,7 +424,7 @@ export default function Hero() {
                     >
                       <div className="flex items-start justify-between gap-2 mb-1">
                         <h3 className="font-display text-base font-bold text-amber-950 leading-tight">
-                          {slide.name}
+                          {slideDisplayName}
                         </h3>
                         <span className="text-xs text-amber-600/70 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full flex-shrink-0">
                           {slide.weight}

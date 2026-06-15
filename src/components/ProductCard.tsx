@@ -8,6 +8,7 @@ import { useCartStore } from '@/lib/store';
 import { Product } from '@/types';
 import { formatCurrency } from '@/lib/whatsapp';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { getProductLocale } from '@/lib/product-translations';
 import toast from 'react-hot-toast';
 
 interface Props {
@@ -24,7 +25,8 @@ const badgeClass: Record<string, string> = {
 export default function ProductCard({ product, index = 0 }: Props) {
   const cardRef = useRef<HTMLDivElement>(null);
   const { addItem, openCart } = useCartStore();
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
+  const lp = getProductLocale(product.id, locale, product);
 
   const stockConfig = {
     ready:   { label: t.product.available,  Icon: CheckCircle, color: '#16A34A', bg: 'rgba(22,163,74,0.1)',  border: 'rgba(22,163,74,0.25)'  },
@@ -55,7 +57,7 @@ export default function ProductCard({ product, index = 0 }: Props) {
   const handleAdd = () => {
     if (!isAvailable) return;
     addItem(product);
-    toast.success(`${product.name} (${product.weight}) ${t.product.added}!`, { icon: product.emoji });
+    toast.success(`${lp.name} (${product.weight}) ${t.product.added}!`, { icon: product.emoji });
     openCart();
   };
 
@@ -203,17 +205,17 @@ export default function ProductCard({ product, index = 0 }: Props) {
       <div className="p-4 flex flex-col flex-1">
         {/* Name */}
         <h3 className="font-display text-base font-bold text-amber-950 leading-tight line-clamp-2 mb-1">
-          {product.name}
+          {lp.name}
         </h3>
 
         {/* Description */}
         <p className="text-amber-800/50 text-xs leading-relaxed line-clamp-2 mb-3">
-          {product.description}
+          {lp.description}
         </p>
 
         {/* Details */}
         <ul className="space-y-1 mb-4 flex-1">
-          {product.details.slice(0, 3).map((detail, i) => (
+          {lp.details.slice(0, 3).map((detail, i) => (
             <li key={i} className="flex items-start gap-1.5">
               <CheckCircle2
                 size={11}
