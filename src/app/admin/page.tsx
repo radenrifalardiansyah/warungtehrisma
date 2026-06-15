@@ -386,11 +386,8 @@ export default function AdminPage() {
 
         {/* Credit */}
         <p className="text-amber-400/50 text-xs text-center pt-2 border-t border-amber-100">
-          © {new Date().getFullYear()} Cemilan Teh Risma · Dibuat oleh{' '}
-          <a href="https://rmediasolutions.id" target="_blank" rel="noopener noreferrer"
-            className="text-amber-500 hover:text-amber-700 transition-colors">
-            RMedia Solutions
-          </a>
+          Dikembangkan oleh <span className="text-amber-500">PT. Eleven Digital Indonesia</span>
+          {' · '}didukung oleh <span className="text-amber-500">PT. RMedia Production</span>
         </p>
 
       </div>
