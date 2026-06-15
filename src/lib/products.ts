@@ -45,7 +45,7 @@ export const products: Product[] = [
     name: 'Mie Kremes Pedas',
     description: 'Mie kremes dengan bubuk cabai asli dan bumbu pedas khas. Pedas yang nendang, renyah yang maknyuss!',
     details: [
-      'Bahan: Mie Kering, Bubuk Cabai Asli, Bumbu Pedas, Daun Jeruk, Kencur',
+      'Bahan: Mie Kering, Bubuk Cabai Asli, Bumbu Pedas, Daun Jeruk, Kencur, Bawang Putih',
       'Bersertifikat HALAL Indonesia',
       'NIB: 0403260068412 — Produksi Bogor',
       'Tanpa pengawet, tekstur super crispy',
