@@ -223,6 +223,7 @@ export default function Footer() {
           <div className="flex flex-col items-center sm:items-start gap-0.5">
             <p className="text-amber-50/85 text-sm">{t.footer.copyright}</p>
             <p className="text-amber-200/70 text-xs whitespace-nowrap">
+              {locale === 'en' ? 'Developed by ' : 'Dikembangkan oleh '}
               <a
                 href="https://eleven-digital.id"
                 target="_blank"
@@ -246,6 +247,7 @@ export default function Footer() {
     <div className="block md:hidden bg-amber-800 border-t border-amber-700/50 px-4 py-3 text-center">
       <p className="text-amber-50/70 text-xs mb-1">{t.footer.copyright}</p>
       <p className="text-[10px] mt-0.5 whitespace-nowrap overflow-hidden text-ellipsis">
+        <span className="text-amber-200/50">{locale === 'en' ? 'Developed by ' : 'Dikembangkan oleh '}</span>
         <a
           href="https://eleven-digital.id"
           target="_blank"
