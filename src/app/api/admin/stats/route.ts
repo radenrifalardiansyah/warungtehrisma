@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-const REDIS_URL   = process.env.UPSTASH_REDIS_REST_URL   ?? '';
-const REDIS_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN ?? '';
+import { getDb } from '@/lib/firebase';
 
 function isAuthed(req: NextRequest) {
   const auth = req.headers.get('x-admin-auth') ?? '';
@@ -15,29 +13,20 @@ function isAuthed(req: NextRequest) {
   return !!validUser && cu === validUser && cr.join(':') === validPass;
 }
 
-async function redisPipeline(commands: string[][]): Promise<Array<{ result: unknown }>> {
-  if (!REDIS_URL || !REDIS_TOKEN) return [];
-  try {
-    const res = await fetch(`${REDIS_URL}/pipeline`, {
-      method:  'POST',
-      headers: { Authorization: `Bearer ${REDIS_TOKEN}`, 'Content-Type': 'application/json' },
-      body:    JSON.stringify(commands),
-      cache:   'no-store',
-    });
-    if (!res.ok) return [];
-    return res.json();
-  } catch {
-    return [];
-  }
-}
-
-const PAGES = ['/', '/products', '/reseller', '/panduan', '/kontak', '/checkout'];
+const PAGE_KEYS: Record<string, string> = {
+  home:      '/',
+  products:  '/products',
+  reseller:  '/reseller',
+  panduan:   '/panduan',
+  kontak:    '/kontak',
+  checkout:  '/checkout',
+};
 
 export async function GET(req: NextRequest) {
   if (!isAuthed(req)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  if (!REDIS_URL || !REDIS_TOKEN) {
-    return NextResponse.json({ error: 'no_redis' }, { status: 500 });
+  if (!process.env.FIREBASE_SERVICE_ACCOUNT) {
+    return NextResponse.json({ error: 'no_firebase' }, { status: 500 });
   }
 
   // Last 30 days
@@ -47,30 +36,38 @@ export async function GET(req: NextRequest) {
     return d.toISOString().slice(0, 10);
   });
 
-  const commands: string[][] = [
-    ...days.map(d => ['get',   `analytics:views:${d}`]),
-    ...days.map(d => ['scard', `analytics:visitors:${d}`]),
-    ...PAGES.map(p => ['get',  `analytics:page:${p}`]),
-    ['get', 'analytics:device:mobile'],
-    ['get', 'analytics:device:desktop'],
-  ];
+  const snapshots = await Promise.all(
+    days.map(day => getDb().collection('analytics').doc(day).get())
+  );
 
-  const results = await redisPipeline(commands);
+  let pageViews = 0;
+  let mobile    = 0;
+  let desktop   = 0;
+  const pageAgg: Record<string, number> = {};
+  const visitorSet = new Set<string>();
 
-  const n = (r: { result: unknown } | undefined) => Number(r?.result) || 0;
+  for (const snap of snapshots) {
+    if (!snap.exists) continue;
+    const data = snap.data()!;
+    pageViews += Number(data.views   ?? 0);
+    mobile    += Number(data.mobile  ?? 0);
+    desktop   += Number(data.desktop ?? 0);
 
-  const pageViews = days.reduce((sum, _, i) => sum + n(results[i]), 0);
-  const visitors  = days.reduce((sum, _, i) => sum + n(results[30 + i]), 0);
-  const mobile    = n(results[60 + PAGES.length]);
-  const desktop   = n(results[61 + PAGES.length]);
+    for (const key of Object.keys(data.visitors ?? {})) {
+      visitorSet.add(key);
+    }
+    for (const [key, count] of Object.entries(data.pages ?? {})) {
+      pageAgg[key] = (pageAgg[key] ?? 0) + Number(count);
+    }
+  }
 
-  const paths = PAGES
-    .map((p, i) => ({ path: p, visitors: n(results[60 + i]) }))
+  const paths = Object.entries(PAGE_KEYS)
+    .map(([key, path]) => ({ path, visitors: pageAgg[key] ?? 0 }))
     .filter(p => p.visitors > 0)
     .sort((a, b) => b.visitors - a.visitors);
 
   return NextResponse.json({
-    stats:   { visitors, pageViews },
+    stats:   { visitors: visitorSet.size, pageViews },
     devices: [
       { type: 'mobile',  count: mobile  },
       { type: 'desktop', count: desktop },

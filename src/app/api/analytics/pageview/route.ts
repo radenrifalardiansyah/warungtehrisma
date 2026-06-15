@@ -1,17 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-const REDIS_URL   = process.env.UPSTASH_REDIS_REST_URL   ?? '';
-const REDIS_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN ?? '';
-
-async function redisPipeline(commands: string[][]) {
-  if (!REDIS_URL || !REDIS_TOKEN) return;
-  await fetch(`${REDIS_URL}/pipeline`, {
-    method:  'POST',
-    headers: { Authorization: `Bearer ${REDIS_TOKEN}`, 'Content-Type': 'application/json' },
-    body:    JSON.stringify(commands),
-    cache:   'no-store',
-  });
-}
+import { getDb, FieldValue } from '@/lib/firebase';
 
 export async function POST(req: NextRequest) {
   try {
@@ -21,23 +9,24 @@ export async function POST(req: NextRequest) {
 
     const today  = new Date().toISOString().slice(0, 10);
     const devKey = device === 'mobile' ? 'mobile' : 'desktop';
-    const TTL    = '2764800'; // 32 hari
+    // Firestore field names can't contain '/' — convert path to safe key
+    const pageKey = path === '/' ? 'home' : path.replace(/^\//, '').replace(/\//g, '_');
 
-    const cmds: string[][] = [
-      ['incr', `analytics:views:${today}`],
-      ['expire', `analytics:views:${today}`, TTL],
-      ['incr', `analytics:page:${path ?? '/'}`],
-      ['incr', `analytics:device:${devKey}`],
-    ];
+    const update: Record<string, unknown> = {
+      views:            FieldValue.increment(1),
+      [devKey]:         FieldValue.increment(1),
+      [`pages.${pageKey}`]: FieldValue.increment(1),
+    };
 
     if (sessionId) {
-      cmds.push(['sadd', `analytics:visitors:${today}`, sessionId]);
-      cmds.push(['expire', `analytics:visitors:${today}`, TTL]);
+      update[`visitors.${sessionId}`] = true;
     }
 
-    await redisPipeline(cmds);
+    await getDb().collection('analytics').doc(today).set(update, { merge: true });
+
     return NextResponse.json({ ok: true });
-  } catch {
+  } catch (err) {
+    console.error('[analytics/pageview]', err);
     return NextResponse.json({ ok: false });
   }
 }
