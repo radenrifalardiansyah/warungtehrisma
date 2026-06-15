@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, useMotionValue, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import { ShoppingCart, Plus, Weight, CheckCircle2, ChevronLeft, ChevronRight, CheckCircle, XCircle, Clock3 } from 'lucide-react';
 import { useCartStore } from '@/lib/store';
@@ -61,7 +62,9 @@ export default function ProductCard({ product, index = 0 }: Props) {
   const isAvailable = product.stock === 'ready' || product.stock === 'open_po';
   const stock = stockConfig[product.stock];
 
-  const handleAdd = () => {
+  const handleAdd = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (!isAvailable) return;
     addItem(product);
     toast.success(`${lp.name} (${product.weight}) ${t.product.added}!`, { icon: product.emoji });
@@ -69,12 +72,14 @@ export default function ProductCard({ product, index = 0 }: Props) {
   };
 
   const prevImg = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     setImgDir(-1);
     setImgIndex(i => (i - 1 + images.length) % images.length);
   };
 
   const nextImg = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     setImgDir(1);
     setImgIndex(i => (i + 1) % images.length);
@@ -87,6 +92,7 @@ export default function ProductCard({ product, index = 0 }: Props) {
   };
 
   return (
+    <Link href={`/products/${product.id}`} className="block">
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -183,7 +189,7 @@ export default function ProductCard({ product, index = 0 }: Props) {
                 {images.map((_, i) => (
                   <button
                     key={i}
-                    onClick={e => { e.stopPropagation(); setImgDir(i > imgIndex ? 1 : -1); setImgIndex(i); }}
+                    onClick={e => { e.preventDefault(); e.stopPropagation(); setImgDir(i > imgIndex ? 1 : -1); setImgIndex(i); }}
                     className="rounded-full transition-all duration-300"
                     style={{
                       width: i === imgIndex ? 16 : 6,
@@ -263,5 +269,6 @@ export default function ProductCard({ product, index = 0 }: Props) {
         </div>
       </div>
     </motion.div>
+    </Link>
   );
 }

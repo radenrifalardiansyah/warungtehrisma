@@ -41,6 +41,8 @@ export const translations = {
     },
     product: {
       available: 'Tersedia', outOfStock: 'Stok Habis', openPO: 'Open PO', added: 'ditambahkan',
+      addToCart: 'Tambah ke Keranjang', back: 'Kembali', notFound: 'Produk tidak ditemukan',
+      imageOf: 'Foto', detailProduct: 'Detail Produk',
     },
     checkout: {
       backToMenu: 'Kembali ke Menu', title1: 'Checkout', title2: 'Pesanan',
@@ -211,7 +213,11 @@ export const translations = {
       emptyDesc: 'Add your favorite items!', seeMenu: 'Browse Menu',
       subtotal: 'Subtotal', total: 'Total', checkout: 'Checkout Now', item: 'item',
     },
-    product: { available: 'In Stock', outOfStock: 'Out of Stock', openPO: 'Open PO', added: 'added' },
+    product: {
+      available: 'In Stock', outOfStock: 'Out of Stock', openPO: 'Open PO', added: 'added',
+      addToCart: 'Add to Cart', back: 'Back', notFound: 'Product not found',
+      imageOf: 'Photo', detailProduct: 'Product Detail',
+    },
     checkout: {
       backToMenu: 'Back to Menu', title1: 'Checkout', title2: 'Order',
       subtitle: 'Confirm order and send to WhatsApp',
