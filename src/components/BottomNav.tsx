@@ -32,13 +32,10 @@ export default function BottomNav() {
   return (
     <>
       <nav
-        className="fixed bottom-0 left-0 right-0 z-50 md:hidden"
-        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+        className="fixed bottom-0 left-0 right-0 z-50 md:hidden border-t border-amber-200"
+        style={{ background: '#FFFBF5', paddingBottom: 'env(safe-area-inset-bottom)', boxShadow: '0 -4px 20px rgba(146,64,14,0.12)' }}
       >
-        <div
-          className="border-t border-amber-200"
-          style={{ background: '#FFFBF5', boxShadow: '0 -4px 20px rgba(146,64,14,0.12)' }}
-        >
+        <div>
           <div className="flex items-stretch">
 
             {/* Main links */}
