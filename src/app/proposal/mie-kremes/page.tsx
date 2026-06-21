@@ -202,6 +202,116 @@ export default function MieKremesProposalPage() {
           </div>
         </section>
 
+        {/* ── 2 MEKANISME KERJASAMA ── */}
+        <section className="mb-12">
+          <ST icon="🤝" label="Mekanisme Kerjasama" title="2 Pilihan Cara Kerjasama" accent="text-orange-600" iconBg="bg-orange-100 border-orange-200" line="from-orange-200" />
+          <p className="text-sm text-[#3D1A00]/50 mt-4 mb-6">
+            Kami menyediakan dua mekanisme yang fleksibel — pilih yang paling sesuai dengan kebutuhan toko Anda.
+          </p>
+          <div className="grid md:grid-cols-2 gap-5">
+
+            {/* Titip Jual */}
+            <div className="bg-white rounded-2xl border-2 border-orange-200 overflow-hidden shadow-sm">
+              <div className="bg-gradient-to-br from-orange-50 to-amber-50 px-6 py-5 border-b border-orange-100">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="text-3xl">🤝</span>
+                  <div>
+                    <p className="text-xs font-bold tracking-widest text-orange-500 uppercase">Mekanisme 1</p>
+                    <h3 className="pf text-xl font-bold text-[#1C0A00]">Titip Jual</h3>
+                  </div>
+                </div>
+                <span className="inline-block bg-green-100 border border-green-300 text-green-700 text-xs font-semibold px-3 py-1 rounded-full">Tanpa Modal Awal</span>
+              </div>
+              <div className="p-6">
+                <div className="space-y-2.5 mb-5 text-sm">
+                  <div className="flex justify-between pb-2 border-b border-orange-50">
+                    <span className="text-[#3D1A00]/60">Harga Pengambilan</span>
+                    <span className="font-bold text-orange-700">Rp 9.000 / pcs</span>
+                  </div>
+                  <div className="flex justify-between pb-2 border-b border-orange-50">
+                    <span className="text-[#3D1A00]/60">Harga Jual ke Konsumen</span>
+                    <span className="font-semibold text-[#1C0A00]">Rp 10.000 / pcs (tetap)</span>
+                  </div>
+                  <div className="flex justify-between pb-2 border-b border-orange-50">
+                    <span className="text-[#3D1A00]/60">Margin Toko</span>
+                    <span className="font-bold text-green-600">Rp 1.000 / pcs</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-[#3D1A00]/60">Sistem Pembayaran</span>
+                    <span className="font-semibold text-[#1C0A00]">Mingguan / Bulanan</span>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  {[
+                    'Produk dititipkan tanpa biaya di muka',
+                    'Bayar hanya dari produk yang terjual',
+                    'Stok tidak laku / mendekati kedaluarsa diganti',
+                    'Cocok untuk toko yang baru mencoba produk kami',
+                  ].map(p => (
+                    <div key={p} className="flex gap-2 text-sm text-[#3D1A00]/70">
+                      <span className="text-green-500 flex-shrink-0 mt-0.5">✓</span>
+                      <span>{p}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Beli Putus / Reseller */}
+            <div className="relative bg-white rounded-2xl border-2 border-orange-400 overflow-hidden shadow-md">
+              <div className="absolute top-0 left-0 right-0 text-center py-1.5 text-xs font-bold text-white" style={{background:'linear-gradient(90deg,#f97316,#D97706)'}}>
+                Margin Lebih Besar
+              </div>
+              <div className="bg-gradient-to-br from-orange-100 to-amber-100 px-6 pt-9 pb-5 border-b border-orange-200">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="text-3xl">💼</span>
+                  <div>
+                    <p className="text-xs font-bold tracking-widest text-orange-600 uppercase">Mekanisme 2</p>
+                    <h3 className="pf text-xl font-bold text-[#1C0A00]">Beli Putus / Reseller</h3>
+                  </div>
+                </div>
+                <span className="inline-block bg-orange-200 border border-orange-300 text-orange-800 text-xs font-semibold px-3 py-1 rounded-full">Bayar Langsung / Cash</span>
+              </div>
+              <div className="p-6">
+                <div className="space-y-2.5 mb-5 text-sm">
+                  <div className="flex justify-between pb-2 border-b border-orange-50">
+                    <span className="text-[#3D1A00]/60">Harga Per Pcs</span>
+                    <span className="font-bold text-orange-700">Rp 8.000 – 9.000</span>
+                  </div>
+                  <div className="flex justify-between pb-2 border-b border-orange-50">
+                    <span className="text-[#3D1A00]/60">Harga Jual ke Konsumen</span>
+                    <span className="font-semibold text-[#1C0A00]">Bebas (saran Rp 10.000)</span>
+                  </div>
+                  <div className="flex justify-between pb-2 border-b border-orange-50">
+                    <span className="text-[#3D1A00]/60">Potensi Margin</span>
+                    <span className="font-bold text-green-600">Rp 1.000 – 2.000 / pcs</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-[#3D1A00]/60">Sistem Pembayaran</span>
+                    <span className="font-semibold text-[#1C0A00]">Cash / Bayar Langsung</span>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  {[
+                    'Pilih dari 3 paket sesuai kemampuan modal',
+                    'Harga makin murah semakin banyak order',
+                    'Bebas tentukan harga jual sendiri',
+                    'Cocok untuk toko yang sudah yakin & ingin margin lebih besar',
+                  ].map(p => (
+                    <div key={p} className="flex gap-2 text-sm text-[#3D1A00]/70">
+                      <span className="text-green-500 flex-shrink-0 mt-0.5">✓</span>
+                      <span>{p}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+          <p className="text-xs text-[#3D1A00]/40 mt-4 text-center">
+            Detail pilihan paket Beli Putus tersedia di seksi <strong>Paket Reseller</strong> di bawah.
+          </p>
+        </section>
+
         {/* ── PRODUK ── */}
         <section className="mb-12">
           <ST icon="🍝" label="Katalog Produk" title="Detail Produk Mie Kremes" accent="text-orange-600" iconBg="bg-orange-100 border-orange-200" line="from-orange-200" />
@@ -397,33 +507,6 @@ export default function MieKremesProposalPage() {
                 </div>
               </div>
             ))}
-          </div>
-        </section>
-
-        {/* ── SKEMA KERJASAMA ── */}
-        <section className="mb-12">
-          <ST icon="🤝" label="Skema Kerjasama" title="Mekanisme Titip Jual" accent="text-orange-600" iconBg="bg-orange-100 border-orange-200" line="from-orange-200" />
-          <div className={`mt-6 bg-gradient-to-br ${C.schemeBg} border rounded-2xl p-8`}>
-            <p className="text-[#3D1A00]/70 text-sm mb-6">
-              Kami menawarkan skema <strong className={C.schemeStrong}>menguntungkan dan tidak memberatkan</strong> mitra. Berikut mekanismenya:
-            </p>
-            <div className="space-y-5">
-              {[
-                { s: '01', t: 'Penitipan Produk', d: 'Produk dititipkan di toko mitra tanpa biaya di muka. Kami antar langsung ke lokasi dalam kondisi layak jual.' },
-                { s: '02', t: 'Margin Keuntungan Mitra', d: 'Mitra mendapat margin kompetitif setiap produk terjual. Detail margin dibahas dan disepakati bersama sebelum kerjasama dimulai.' },
-                { s: '03', t: 'Perhitungan Berkala', d: 'Pembayaran dilakukan mingguan atau bulanan sesuai kesepakatan, berdasarkan jumlah produk yang terjual.' },
-                { s: '04', t: 'Rotasi Produk', d: 'Produk mendekati batas kadaluarsa atau tidak terjual akan diganti produk baru — mitra tidak rugi.' },
-                { s: '05', t: 'Fleksibel & Bisa Negosiasi', d: 'Jumlah produk, jadwal pengiriman, dan detail lain dapat disesuaikan sepenuhnya dengan kebutuhan toko mitra.' },
-              ].map(item => (
-                <div key={item.s} className="flex gap-4">
-                  <div className={`w-10 h-10 rounded-xl ${C.stepNum} border flex items-center justify-center font-bold text-sm flex-shrink-0`}>{item.s}</div>
-                  <div>
-                    <h4 className="font-semibold text-[#1C0A00] mb-0.5">{item.t}</h4>
-                    <p className="text-sm text-[#3D1A00]/70 leading-relaxed">{item.d}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 
