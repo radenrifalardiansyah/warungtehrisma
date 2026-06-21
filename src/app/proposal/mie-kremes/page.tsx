@@ -119,7 +119,7 @@ export default function MieKremesProposalPage() {
               </div>
 
               <h1 className="pf text-4xl md:text-5xl font-bold leading-tight mb-2 text-[#1C0A00]">
-                Proposal Titip Jual<br />
+                Proposal<br />
                 <span className={C.heading}>Mie Kremes</span>
               </h1>
               <p className="text-[#3D1A00]/60 text-sm md:text-base max-w-md">
