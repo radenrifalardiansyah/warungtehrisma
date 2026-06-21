@@ -34,7 +34,7 @@ export default function ProposalPage() {
       `}</style>
 
       {/* ── HERO ── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 border-b border-amber-100">
+      <section className="relative overflow-hidden bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
         <div className="absolute inset-0 opacity-30">
           <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-amber-200 blur-3xl translate-x-1/3 -translate-y-1/3 orb-pulse" />
           <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-orange-200 blur-3xl -translate-x-1/4 translate-y-1/4 orb-pulse" style={{animationDelay:'2s'}} />
@@ -177,9 +177,14 @@ export default function ProposalPage() {
             <p className="font-semibold text-[#1C0A00] mb-1">Cemilan Teh Risma — Bogor, Jawa Barat</p>
             <p className="text-sm text-[#3D1A00]/60">NIB: 0403260068412 · Bersertifikat HALAL Indonesia · Tanpa Pengawet</p>
           </div>
-          <a href="https://wa.me/6281212132014" target="_blank" rel="noopener noreferrer" className="no-print inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors flex-shrink-0">
-            💬 WhatsApp
-          </a>
+          <div className="no-print flex flex-col sm:flex-row gap-2 flex-shrink-0">
+            <a href="/" className="inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors">
+              🛒 Toko Saya
+            </a>
+            <a href="https://wa.me/6281212132014" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors">
+              💬 WhatsApp
+            </a>
+          </div>
         </div>
       </div>
 

@@ -622,8 +622,8 @@ export default function MieKremesProposalPage() {
               <a href="https://wa.me/6281212132014" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold px-7 py-3 rounded-xl transition-colors">
                 💬 Hubungi via WhatsApp
               </a>
-              <a href="https://cemilantehrisma.vercel.app" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold px-7 py-3 rounded-xl transition-colors">
-                🌐 Lihat Katalog Online
+              <a href="/" className="inline-flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold px-7 py-3 rounded-xl transition-colors">
+                🛒 Toko Saya
               </a>
             </div>
             <div className="grid sm:grid-cols-3 gap-3 text-sm">
@@ -632,10 +632,10 @@ export default function MieKremesProposalPage() {
                 <div className="text-xs text-orange-700 font-semibold">WhatsApp</div>
                 <div className="text-[#1C0A00] font-medium text-xs mt-0.5">+62 812-1213-2014</div>
               </a>
-              <a href="https://cemilantehrisma.vercel.app" target="_blank" rel="noopener noreferrer" className="bg-white rounded-xl border border-orange-100 p-3 hover:border-orange-300 transition-colors">
-                <div className="text-xl mb-1">🌐</div>
-                <div className="text-xs text-orange-700 font-semibold">Website</div>
-                <div className="text-orange-600 font-medium text-xs mt-0.5 underline underline-offset-2">cemilantehrisma.vercel.app</div>
+              <a href="/" className="bg-white rounded-xl border border-orange-100 p-3 hover:border-orange-300 transition-colors">
+                <div className="text-xl mb-1">🛒</div>
+                <div className="text-xs text-orange-700 font-semibold">Toko Online</div>
+                <div className="text-orange-600 font-medium text-xs mt-0.5 underline underline-offset-2">Kunjungi Toko Kami</div>
               </a>
               <div className="bg-white rounded-xl border border-orange-100 p-3">
                 <div className="text-xl mb-1">📍</div>
