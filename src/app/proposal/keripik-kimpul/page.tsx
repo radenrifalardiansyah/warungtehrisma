@@ -67,7 +67,7 @@ export default function KeripikKimpulProposalPage() {
       `}</style>
 
       {/* ── HERO ── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-amber-50 via-yellow-50 to-amber-50 border-b border-amber-100">
+      <section className="relative overflow-hidden bg-gradient-to-br from-amber-50 via-yellow-50 to-amber-50">
         <div className="absolute inset-0 opacity-25">
           <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-amber-300 blur-3xl translate-x-1/3 -translate-y-1/3" />
           <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-yellow-200 blur-3xl -translate-x-1/4 translate-y-1/4" />
