@@ -126,7 +126,7 @@ const s = StyleSheet.create({
   paketHeaderGreen: { backgroundColor: '#15803D', padding: 10, alignItems: 'center' },
   paketHeaderOrange:{ backgroundColor: '#C2410C', padding: 10, alignItems: 'center' },
   paketHeaderPurple:{ backgroundColor: '#6D28D9', padding: 10, alignItems: 'center' },
-  paketHeaderEmoji: { fontSize: 18, marginBottom: 4 },
+  paketHeaderIcon:  { fontSize: 10, fontFamily: 'Helvetica-Bold', color: 'rgba(255,255,255,0.7)', marginBottom: 3, letterSpacing: 1 },
   paketHeaderTitle: { color: C.white, fontSize: 10, fontFamily: 'Helvetica-Bold', textAlign: 'center' },
   paketHeaderBadge: { backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: 10, paddingHorizontal: 6, paddingVertical: 2, marginTop: 3 },
   paketHeaderBadgeText: { color: C.white, fontSize: 7 },
@@ -140,10 +140,10 @@ const s = StyleSheet.create({
   paketUntungLbl:   { fontSize: 7, color: C.green, marginTop: 1 },
 
   // Keunggulan
-  keunggulanGrid:   { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 8 },
-  keunggulanItem:   { width: '47%', borderWidth: 1, borderColor: C.border, borderRadius: 6, padding: 10, backgroundColor: C.white },
-  keunggulanTitle:  { fontSize: 9.5, fontFamily: 'Helvetica-Bold', color: C.dark, marginBottom: 3 },
-  keunggulanDesc:   { fontSize: 8.5, color: C.body, lineHeight: 1.5 },
+  keunggulanGrid:   { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 6 },
+  keunggulanItem:   { width: '47%', borderWidth: 1, borderColor: C.border, borderRadius: 6, padding: 8, backgroundColor: C.white },
+  keunggulanTitle:  { fontSize: 9, fontFamily: 'Helvetica-Bold', color: C.dark, marginBottom: 2 },
+  keunggulanDesc:   { fontSize: 8, color: C.body, lineHeight: 1.4 },
 
   // Target pasar
   targetGrid:       { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 8 },
@@ -151,13 +151,13 @@ const s = StyleSheet.create({
   targetText:       { fontSize: 9, color: C.body },
 
   // Legalitas
-  legalBox:         { borderWidth: 1, borderColor: C.border, borderRadius: 8, padding: 16, backgroundColor: C.white, marginBottom: 14 },
-  legalRow:         { flexDirection: 'row', alignItems: 'center', marginBottom: 8 },
+  legalBox:         { borderWidth: 1, borderColor: C.border, borderRadius: 8, padding: 10, backgroundColor: C.white, marginBottom: 8 },
+  legalRow:         { flexDirection: 'row', alignItems: 'center', marginBottom: 6 },
   legalHalalImg:    { width: 36, height: 36, marginRight: 12 },
   legalText:        { fontSize: 10, color: C.body, lineHeight: 1.5, flex: 1 },
 
   // Contact
-  contactRow:       { flexDirection: 'row', gap: 12, marginBottom: 14 },
+  contactRow:       { flexDirection: 'row', gap: 10, marginBottom: 8 },
   contactCard:      { flex: 1, borderWidth: 1, borderColor: C.border, borderRadius: 8, padding: 12, backgroundColor: C.white },
   contactLabel:     { fontSize: 8, fontFamily: 'Helvetica-Bold', color: C.muted, textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 4 },
   contactValue:     { fontSize: 10, fontFamily: 'Helvetica-Bold', color: C.dark },
@@ -427,12 +427,12 @@ export default function MieKremesPDF({ logo, imgOri, imgPdas, halalLogo }: Props
                   <Text style={[s.mechInfoText, { color: C.muted, marginTop: 3 }]}>Saran min. Rp 10.000/pcs{'\n'}Harga lebih tinggi = margin lebih besar</Text>
                 </View>
 
-                <View style={[s.mechRow, { gap: 8, marginBottom: 8 }]}>
-                  <View style={s.mechGreenBox}>
-                    <Text style={s.mechGreenVal}>Min. Rp 1.000</Text>
+                <View style={{ flexDirection: 'row', gap: 8, marginBottom: 8 }}>
+                  <View style={[s.mechGreenBox, { flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginBottom: 0 }]}>
+                    <Text style={s.mechGreenVal}>Rp 1.000+</Text>
                     <Text style={s.mechGreenLbl}>per pcs</Text>
                   </View>
-                  <View style={[s.mechGreenBox, { backgroundColor: C.accentLight }]}>
+                  <View style={[s.mechGreenBox, { flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: C.accentLight, marginBottom: 0 }]}>
                     <Text style={[s.mechGreenVal, { color: C.accent }]}>Mingguan</Text>
                     <Text style={[s.mechGreenLbl, { color: C.accent }]}>/ Bulanan</Text>
                   </View>
@@ -478,13 +478,13 @@ export default function MieKremesPDF({ logo, imgOri, imgPdas, halalLogo }: Props
                   <Text style={[s.mechInfoText, { color: '#6D28D9', marginTop: 3 }]}>Acuan harga eceran: Rp 10.000/pcs{'\n'}Stok milik toko, jual kapan saja</Text>
                 </View>
 
-                <View style={[s.mechRow, { gap: 8, marginBottom: 8 }]}>
-                  <View style={[s.mechGreenBox, { backgroundColor: C.violetLight }]}>
+                <View style={{ flexDirection: 'row', gap: 8, marginBottom: 8 }}>
+                  <View style={[s.mechGreenBox, { flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: C.violetLight, marginBottom: 0 }]}>
                     <Text style={[s.mechGreenVal, { color: C.violet }]}>Cash</Text>
-                    <Text style={[s.mechGreenLbl, { color: C.violet }]}>Transfer</Text>
+                    <Text style={[s.mechGreenLbl, { color: C.violet }]}>/ Transfer</Text>
                   </View>
-                  <View style={[s.mechGreenBox, { backgroundColor: C.violetLight }]}>
-                    <Text style={[s.mechGreenVal, { color: C.violet, fontSize: 10 }]}>Lunas</Text>
+                  <View style={[s.mechGreenBox, { flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: C.violetLight, marginBottom: 0 }]}>
+                    <Text style={[s.mechGreenVal, { color: C.violet }]}>Lunas</Text>
                     <Text style={[s.mechGreenLbl, { color: C.violet }]}>di muka</Text>
                   </View>
                 </View>
@@ -533,7 +533,7 @@ export default function MieKremesPDF({ logo, imgOri, imgPdas, halalLogo }: Props
             {/* Pemula */}
             <View style={s.paketCard}>
               <View style={s.paketHeaderGreen}>
-                <Text style={s.paketHeaderEmoji}>🌱</Text>
+                <Text style={s.paketHeaderIcon}>PEMULA</Text>
                 <Text style={s.paketHeaderTitle}>Krenyes Pemula</Text>
                 <View style={s.paketHeaderBadge}><Text style={s.paketHeaderBadgeText}>Untuk Pemula</Text></View>
               </View>
@@ -553,7 +553,7 @@ export default function MieKremesPDF({ logo, imgOri, imgPdas, halalLogo }: Props
             {/* Best Seller */}
             <View style={s.paketCard}>
               <View style={s.paketHeaderOrange}>
-                <Text style={s.paketHeaderEmoji}>🔥</Text>
+                <Text style={s.paketHeaderIcon}>BEST SELLER</Text>
                 <Text style={s.paketHeaderTitle}>Kremes Nagih</Text>
                 <View style={[s.paketHeaderBadge, { backgroundColor: 'rgba(255,255,255,0.3)' }]}><Text style={[s.paketHeaderBadgeText, { fontFamily: 'Helvetica-Bold' }]}>Best Seller</Text></View>
               </View>
@@ -573,7 +573,7 @@ export default function MieKremesPDF({ logo, imgOri, imgPdas, halalLogo }: Props
             {/* Maksimal */}
             <View style={s.paketCard}>
               <View style={s.paketHeaderPurple}>
-                <Text style={s.paketHeaderEmoji}>💎</Text>
+                <Text style={s.paketHeaderIcon}>PREMIUM</Text>
                 <Text style={s.paketHeaderTitle}>Kriuk Maksimal</Text>
                 <View style={s.paketHeaderBadge}><Text style={s.paketHeaderBadgeText}>Untung Terbesar</Text></View>
               </View>
@@ -625,7 +625,7 @@ export default function MieKremesPDF({ logo, imgOri, imgPdas, halalLogo }: Props
 
         <View style={s.body}>
           {/* Keunggulan */}
-          <Text style={{ fontSize: 11, fontFamily: 'Helvetica-Bold', color: C.dark, marginBottom: 10 }}>Mengapa Memilih Mie Kremes?</Text>
+          <Text style={{ fontSize: 10.5, fontFamily: 'Helvetica-Bold', color: C.dark, marginBottom: 8 }}>Mengapa Memilih Mie Kremes?</Text>
           <View style={s.keunggulanGrid}>
             {[
               { t: 'Rasa Unik & Khas',          d: 'Mie kering crispy dengan bumbu rempah alami khas Bogor yang berbeda dari snack pada umumnya.' },
@@ -643,7 +643,7 @@ export default function MieKremesPDF({ logo, imgOri, imgPdas, halalLogo }: Props
           </View>
 
           {/* Target Pasar */}
-          <Text style={{ fontSize: 11, fontFamily: 'Helvetica-Bold', color: C.dark, marginTop: 12, marginBottom: 8 }}>Target & Cocok Dijual Di</Text>
+          <Text style={{ fontSize: 10, fontFamily: 'Helvetica-Bold', color: C.dark, marginTop: 8, marginBottom: 6 }}>Target & Cocok Dijual Di</Text>
           <View style={s.targetGrid}>
             {['Warung & Toko Oleh-Oleh', 'Minimarket Lokal', 'Kafe & Warung Kopi', 'Kantin Sekolah', 'Rest Area & Wisata', 'Hotel & Penginapan', 'Pameran & Bazaar', 'Online Shop'].map(t => (
               <View key={t} style={s.targetChip}><Text style={s.targetText}>{t}</Text></View>
@@ -651,7 +651,7 @@ export default function MieKremesPDF({ logo, imgOri, imgPdas, halalLogo }: Props
           </View>
 
           {/* Legalitas */}
-          <Text style={{ fontSize: 11, fontFamily: 'Helvetica-Bold', color: C.dark, marginTop: 12, marginBottom: 8 }}>Legalitas & Sertifikasi</Text>
+          <Text style={{ fontSize: 10, fontFamily: 'Helvetica-Bold', color: C.dark, marginTop: 8, marginBottom: 6 }}>Legalitas & Sertifikasi</Text>
           <View style={s.legalBox}>
             <View style={s.legalRow}>
               <Image src={halalLogo} style={s.legalHalalImg} />
@@ -675,7 +675,7 @@ export default function MieKremesPDF({ logo, imgOri, imgPdas, halalLogo }: Props
           </View>
 
           {/* Kontak */}
-          <Text style={{ fontSize: 11, fontFamily: 'Helvetica-Bold', color: C.dark, marginBottom: 8 }}>Informasi Kontak</Text>
+          <Text style={{ fontSize: 10, fontFamily: 'Helvetica-Bold', color: C.dark, marginBottom: 6 }}>Informasi Kontak</Text>
           <View style={s.contactRow}>
             {[
               { l: 'WhatsApp', v: '+62 812-1213-2014', s: 'Chat / Telepon — Senin-Sabtu 08.00-20.00' },
@@ -690,8 +690,8 @@ export default function MieKremesPDF({ logo, imgOri, imgPdas, halalLogo }: Props
             ))}
           </View>
 
-          <View style={[s.infoBox, { marginTop: 4 }]}>
-            <Text style={[s.bodyText, { marginBottom: 0, fontSize: 9.5, fontStyle: 'italic' }]}>
+          <View style={[s.infoBox, { marginTop: 4 }]} wrap={false}>
+            <Text style={[s.bodyText, { marginBottom: 0, fontSize: 9, fontStyle: 'italic' }]}>
               Dokumen ini diterbitkan oleh Cemilan Teh Risma — Bogor · 2026. Bersifat rahasia dan hanya untuk keperluan kerjasama bisnis. Untuk diskusi lebih lanjut, hubungi kami via WhatsApp di nomor 0812-1213-2014.
             </Text>
           </View>
