@@ -96,6 +96,7 @@ export default function KimpulCardStack({ imgOri, imgBBQ, imgBBQPdas, imgJgn }: 
                   left: 12,
                   borderRadius: 16,
                   overflow: 'hidden',
+                  background: 'white',
                   zIndex: p.z,
                   boxShadow: p.shadow,
                   transform: isFlying
@@ -114,7 +115,7 @@ export default function KimpulCardStack({ imgOri, imgBBQ, imgBBQPdas, imgJgn }: 
                   alt={LABELS[i]}
                   width={155}
                   height={194}
-                  className="w-full h-full object-cover pointer-events-none"
+                  className="w-full h-full object-contain pointer-events-none"
                   draggable={false}
                   priority={i === active}
                 />

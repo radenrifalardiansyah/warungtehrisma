@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import Image, { StaticImageData } from 'next/image';
 
 interface Props {
@@ -8,140 +8,167 @@ interface Props {
   imgPdas: StaticImageData;
 }
 
+const STACK = [
+  { tx: 0,  ty: 0,   scale: 1.00, rotate:  0, opacity: 1.0,  z: 40, shadow: '0 24px 48px rgba(0,0,0,0.30)' },
+  { tx: 18, ty: -10, scale: 0.90, rotate:  6, opacity: 0.65, z: 30, shadow: '0 12px 24px rgba(0,0,0,0.18)' },
+];
+
+const LABELS = ['Original', 'Pedas'];
+const COLORS = ['#EA580C', '#DC2626'];
+
 export default function MieStack3D({ imgOri, imgPdas }: Props) {
-  const ref = useRef<HTMLDivElement>(null);
-  const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [rot, setRot] = useState({ x: 0, y: 0 });
-  const [active, setActive] = useState(false);
-  // only true once the return-to-center transition has finished — prevents
-  // the CSS animation from snapping in before the element reaches (0,0)
-  const [idleReady, setIdleReady] = useState(true);
+  const imgs = [imgOri, imgPdas];
+  const [active, setActive] = useState(0);
+  const [flying, setFlying] = useState(false);
+  const [justLanded, setJustLanded] = useState<number | null>(null);
 
-  const onMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const r = ref.current?.getBoundingClientRect();
-    if (!r) return;
-    setRot({
-      x: ((e.clientY - r.top - r.height / 2) / (r.height / 2)) * -22,
-      y: ((e.clientX - r.left - r.width / 2) / (r.width / 2)) * 22,
-    });
-  }, []);
+  const advance = useCallback(() => {
+    if (flying) return;
+    setFlying(true);
+    setTimeout(() => {
+      setActive(a => {
+        const next = (a + 1) % 2;
+        setJustLanded(a);
+        return next;
+      });
+      setFlying(false);
+      requestAnimationFrame(() => requestAnimationFrame(() => setJustLanded(null)));
+    }, 380);
+  }, [flying]);
 
-  const onEnter = useCallback(() => {
-    if (idleTimer.current) clearTimeout(idleTimer.current);
-    setIdleReady(false);
-    setActive(true);
-  }, []);
-
-  const onLeave = useCallback(() => {
-    setRot({ x: 0, y: 0 });
-    setActive(false);
-    // wait for the 0.7 s return-to-center transition before starting idle animation
-    idleTimer.current = setTimeout(() => setIdleReady(true), 700);
-  }, []);
-
-  const isIdle = idleReady && !active;
-
-  const wrapStyle: React.CSSProperties = {
-    width: '100%',
-    height: '100%',
-    position: 'relative',
-    transformStyle: 'preserve-3d',
-    // keep inline transform while transitioning back to center; remove it only
-    // once we hand off to the CSS idle animation (after the timer fires)
-    transform: isIdle
-      ? undefined
-      : `perspective(1100px) rotateX(${rot.x}deg) rotateY(${rot.y}deg)`,
-    transition: active
-      ? 'transform 0.08s linear'
-      : 'transform 0.7s cubic-bezier(0.23,1,0.32,1)',
-  };
-
-  const shineAngle = 130 + rot.y * 2;
+  const goTo = useCallback((i: number) => {
+    if (flying || i === active) return;
+    setActive(i);
+  }, [flying, active]);
 
   return (
     <>
       <style>{`
-        /* idle animation starts and ends at (0deg, 0deg) so the handoff from the
-           return-to-center transition is seamless — no visual jump */
-        @keyframes mieIdle {
-          0%   { transform: perspective(1000px) rotateY(0deg)  rotateX(0deg)  translateY(0px);   filter: drop-shadow(0 24px 36px rgba(194,65,12,0.22)); }
-          25%  { transform: perspective(1000px) rotateY(-9deg) rotateX(5deg)  translateY(0px);   filter: drop-shadow(0 28px 40px rgba(194,65,12,0.30)); }
-          75%  { transform: perspective(1000px) rotateY(9deg)  rotateX(-5deg) translateY(-18px); filter: drop-shadow(0 40px 54px rgba(194,65,12,0.12)); }
-          100% { transform: perspective(1000px) rotateY(0deg)  rotateX(0deg)  translateY(0px);   filter: drop-shadow(0 24px 36px rgba(194,65,12,0.22)); }
+        @keyframes mieFlyOut {
+          0%   { transform: translateX(0px)   translateY(0px)   scale(1) rotate(0deg);   opacity: 1;   }
+          40%  { transform: translateX(-20px) translateY(-30px) scale(1) rotate(-8deg);  opacity: 0.8; }
+          100% { transform: translateX(180%)  translateY(-60px) scale(1) rotate(30deg);  opacity: 0;   }
         }
-        .mie-idle { animation: mieIdle 5.5s ease-in-out infinite; }
-        .mie-card { transition: filter 0.25s ease, transform 0.25s ease; }
-        .mie-card:hover { filter: brightness(1.12) drop-shadow(0 12px 28px rgba(194,65,12,0.50)) !important; }
-        @keyframes mieGlow {
-          0%,100% { opacity: 0.25; transform: scale(1); }
-          50%      { opacity: 0.45; transform: scale(1.1); }
+        .mie-fly { animation: mieFlyOut 0.38s cubic-bezier(0.4,0,1,1) forwards; }
+
+        @keyframes mieFloat {
+          0%,100% { transform: translateY(0px); }
+          50%     { transform: translateY(-8px); }
         }
-        .mie-glow { animation: mieGlow 3s ease-in-out infinite; }
+        .mie-float { animation: mieFloat 4s ease-in-out infinite; }
       `}</style>
 
-      <div
-        ref={ref}
-        className="flex-shrink-0 relative w-52 h-64 md:w-60 md:h-72 cursor-crosshair select-none"
-        style={{ perspective: '1100px' }}
-        onMouseMove={onMove}
-        onMouseEnter={onEnter}
-        onMouseLeave={onLeave}
-      >
-        {/* Ambient glow */}
+      <div className="flex-shrink-0 flex flex-col items-center gap-5 select-none">
+
+        {/* Stack */}
         <div
-          className="mie-glow absolute inset-0 rounded-full pointer-events-none"
-          style={{
-            background: 'radial-gradient(ellipse at 55% 60%, rgba(251,146,60,0.55) 0%, rgba(245,158,11,0.3) 40%, transparent 70%)',
-            filter: 'blur(20px)',
-          }}
-        />
+          className="relative cursor-pointer"
+          style={{ width: 210, height: 240 }}
+          onClick={advance}
+          title="Klik untuk varian berikutnya"
+        >
+          {imgs.map((img, i) => {
+            const pos = (i - active + 2) % 2;
+            const p   = STACK[pos];
+            const isTop     = pos === 0;
+            const isFlying  = isTop && flying;
+            const isLanding = i === justLanded;
 
-        <div className={isIdle ? 'mie-idle' : ''} style={wrapStyle}>
+            return (
+              <div
+                key={i}
+                className={isFlying ? 'mie-fly absolute' : `absolute ${isTop ? 'mie-float' : ''}`}
+                style={{
+                  width: 155,
+                  height: 194,
+                  top: 24,
+                  left: 12,
+                  borderRadius: 16,
+                  overflow: 'hidden',
+                  background: 'white',
+                  zIndex: p.z,
+                  boxShadow: p.shadow,
+                  transform: isFlying
+                    ? undefined
+                    : `translateX(${p.tx}px) translateY(${p.ty}px) scale(${p.scale}) rotate(${p.rotate}deg)`,
+                  opacity: isFlying ? undefined : p.opacity,
+                  transition: isFlying || isLanding ? 'none' : 'transform 0.45s cubic-bezier(0.23,1,0.32,1), opacity 0.45s ease',
+                  transformOrigin: 'bottom center',
+                  willChange: 'transform, opacity',
+                }}
+              >
+                <Image
+                  src={img}
+                  alt={LABELS[i]}
+                  width={155}
+                  height={194}
+                  className="w-full h-full object-contain pointer-events-none"
+                  draggable={false}
+                  priority={i === active}
+                />
 
-          {/* ── Pedas — back ── */}
-          <div
-            className="absolute mie-card"
-            style={{
-              right: 0, bottom: 0, zIndex: 1,
-              transform: 'translateZ(-35px) scale(0.88)',
-              transformOrigin: 'bottom right',
-              filter: 'brightness(0.82)',
-            }}
-          >
-            <Image
-              src={imgPdas}
-              alt="Mie Kremes Pedas"
-              width={140} height={175}
-              className="rounded-2xl object-cover shadow-xl"
-            />
-          </div>
+                {/* Label overlay — only on top card */}
+                {isTop && !isFlying && (
+                  <div
+                    className="absolute bottom-0 left-0 right-0 flex items-end justify-between px-3 pb-2 pt-8"
+                    style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%)' }}
+                  >
+                    <span className="text-white text-xs font-bold tracking-wide drop-shadow">{LABELS[i]}</span>
+                    <span
+                      className="text-white text-[9px] font-semibold px-2 py-0.5 rounded-full"
+                      style={{ backgroundColor: COLORS[i] }}
+                    >
+                      {i + 1} / 2
+                    </span>
+                  </div>
+                )}
 
-          {/* ── Original — front ── */}
-          <div
-            className="absolute mie-card"
-            style={{
-              left: 0, top: 0, zIndex: 2,
-              transform: 'translateZ(30px)',
-              transformOrigin: 'top left',
-            }}
-          >
-            <Image
-              src={imgOri}
-              alt="Mie Kremes Original"
-              width={155} height={194}
-              className="rounded-2xl object-cover shadow-2xl"
-            />
-            {/* Dynamic shine */}
+                {/* Shine on top card */}
+                {isTop && !isFlying && (
+                  <div
+                    className="absolute inset-0 pointer-events-none rounded-2xl"
+                    style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 55%)' }}
+                  />
+                )}
+              </div>
+            );
+          })}
+
+          {/* Tap hint arrow */}
+          {!flying && (
             <div
-              className="absolute inset-0 rounded-2xl pointer-events-none"
-              style={{
-                background: `linear-gradient(${shineAngle}deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 40%, transparent 65%)`,
-                transition: active ? 'background 0.08s linear' : 'background 0.6s ease',
-              }}
-            />
-          </div>
-
+              className="absolute bottom-1 right-1 flex items-center gap-1 bg-white/80 backdrop-blur-sm rounded-full px-2 py-1 shadow-sm pointer-events-none"
+              style={{ zIndex: 50 }}
+            >
+              <span className="text-orange-700 text-[9px] font-semibold">tap</span>
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M2 5h6M5 2l3 3-3 3" stroke="#EA580C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+          )}
         </div>
+
+        {/* Dot indicators */}
+        <div className="flex items-center gap-2">
+          {LABELS.map((label, i) => (
+            <button
+              key={label}
+              onClick={() => goTo(i)}
+              className="transition-all duration-300 rounded-full border-0 p-0 cursor-pointer focus:outline-none"
+              style={{
+                width:  active === i ? 24 : 8,
+                height: 8,
+                backgroundColor: active === i ? COLORS[active] : '#FED7AA',
+                flexShrink: 0,
+              }}
+              title={label}
+            />
+          ))}
+        </div>
+
+        <p className="text-[10px] text-orange-700/60 font-medium tracking-wide">
+          {LABELS[active]} · Klik untuk varian lain
+        </p>
       </div>
     </>
   );
