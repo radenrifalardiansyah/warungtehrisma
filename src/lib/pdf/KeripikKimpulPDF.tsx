@@ -78,7 +78,7 @@ const s = StyleSheet.create({
   stepDesc:     { fontSize: 9.5, color: C.body, lineHeight: 1.5 },
 
   // Pricing table
-  priceTable:   { borderWidth: 1, borderColor: C.border, borderRadius: 8, overflow: 'hidden', marginBottom: 16 },
+  priceTable:   { borderWidth: 1, borderColor: C.border, borderRadius: 8, overflow: 'hidden', marginBottom: 12 },
   priceHeader:  { backgroundColor: C.primary, flexDirection: 'row', padding: 10 },
   priceHeaderCell: { flex: 1, color: C.white, fontSize: 9, fontFamily: 'Helvetica-Bold', textAlign: 'center' },
   priceRow:     { flexDirection: 'row', padding: 9 },
@@ -86,16 +86,16 @@ const s = StyleSheet.create({
   priceCellBold:{ flex: 1, fontSize: 9, fontFamily: 'Helvetica-Bold', color: C.primary, textAlign: 'center' },
 
   // Variant cards
-  variantGrid:  { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 16 },
+  variantGrid:  { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 12 },
   variantCard:  { width: '47%', borderWidth: 1, borderRadius: 8, overflow: 'hidden' },
-  variantImg:   { width: '100%', height: 90, objectFit: 'cover' },
-  variantBody:  { padding: 10, backgroundColor: C.white },
-  variantName:  { fontSize: 11, fontFamily: 'Helvetica-Bold', color: C.dark, marginBottom: 3 },
-  variantDesc:  { fontSize: 8.5, color: C.body, lineHeight: 1.4, marginBottom: 6 },
-  variantPrices:{ flexDirection: 'row', gap: 6 },
-  variantPrice: { flex: 1, backgroundColor: C.accentLight, borderRadius: 4, padding: 6, alignItems: 'center' },
-  variantPriceVal: { fontSize: 10, fontFamily: 'Helvetica-Bold', color: C.primary },
-  variantPriceLbl: { fontSize: 7.5, color: C.muted, marginTop: 1 },
+  variantImg:   { width: '100%', height: 72, objectFit: 'cover' },
+  variantBody:  { padding: 8, backgroundColor: C.white },
+  variantName:  { fontSize: 10.5, fontFamily: 'Helvetica-Bold', color: C.dark, marginBottom: 2 },
+  variantDesc:  { fontSize: 8, color: C.body, lineHeight: 1.4, marginBottom: 5 },
+  variantPrices:{ flexDirection: 'row', gap: 5 },
+  variantPrice: { flex: 1, backgroundColor: C.accentLight, borderRadius: 4, padding: 5, alignItems: 'center' },
+  variantPriceVal: { fontSize: 9.5, fontFamily: 'Helvetica-Bold', color: C.primary },
+  variantPriceLbl: { fontSize: 7, color: C.muted, marginTop: 1 },
 
   // Mechanisms
   mechRow:      { flexDirection: 'row', gap: 14, marginBottom: 16 },
@@ -334,7 +334,7 @@ export default function KeripikKimpulPDF({ logo, imgOri, imgBBQ, imgBBQPdas, img
           </View>
 
           {/* Pricing table */}
-          <Text style={{ fontSize: 11, fontFamily: 'Helvetica-Bold', color: C.dark, marginBottom: 10 }}>Tabel Harga Lengkap</Text>
+          <Text style={{ fontSize: 10.5, fontFamily: 'Helvetica-Bold', color: C.dark, marginBottom: 8 }}>Tabel Harga Lengkap</Text>
           <View style={s.priceTable}>
             <View style={s.priceHeader}>
               {['Varian Rasa', 'Kemasan 100g', 'Kemasan 250g (Jumbo)', 'Bahan Utama'].map(h => (
@@ -356,7 +356,7 @@ export default function KeripikKimpulPDF({ logo, imgOri, imgBBQ, imgBBQPdas, img
             ))}
           </View>
 
-          <View style={s.infoBox}>
+          <View style={s.infoBox} wrap={false}>
             <Text style={s.infoBoxTitle}>Informasi Umum Produk</Text>
             {[
               ['Masa Simpan',   '3 bulan sejak tanggal produksi (kemasan kedap udara)'],
