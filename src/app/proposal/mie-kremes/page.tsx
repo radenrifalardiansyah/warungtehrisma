@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 // ── Warna tema: sesuai stiker produk Mie Kremes (orange-700 → amber-600 → yellow-400)
 const C = {
-  hero:       'from-orange-50 via-amber-50 to-yellow-50',
+  hero:       'from-orange-100 via-amber-100 to-yellow-100',
   heroBorder: 'border-orange-100',
   blob1:      'bg-orange-200',
   blob2:      'bg-yellow-200',
@@ -84,7 +84,7 @@ export default function MieKremesProposalPage() {
 
       {/* ── HERO ── */}
       <section className={`relative overflow-hidden bg-gradient-to-br ${C.hero}`}>
-        <div className="absolute inset-0 opacity-25">
+        <div className="absolute inset-0 opacity-50">
           <div className={`absolute top-0 right-0 w-96 h-96 rounded-full ${C.blob1} blur-3xl translate-x-1/3 -translate-y-1/3`} />
           <div className={`absolute bottom-0 left-0 w-72 h-72 rounded-full ${C.blob2} blur-3xl -translate-x-1/4 translate-y-1/4`} />
         </div>
