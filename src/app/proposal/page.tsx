@@ -40,13 +40,6 @@ export default function ProposalPage() {
           <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-orange-200 blur-3xl -translate-x-1/4 translate-y-1/4 orb-pulse" style={{animationDelay:'2s'}} />
         </div>
         <div className="relative max-w-4xl mx-auto px-6 pt-6 pb-16">
-          {/* Nav */}
-          <div className="flex justify-between items-center mb-10 no-print">
-            <a href="/" className="inline-flex items-center gap-2 bg-white border border-amber-200 hover:border-amber-400 text-amber-800 text-sm font-medium px-4 py-2 rounded-xl shadow-sm transition-all">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
-              Kembali ke Toko
-            </a>
-          </div>
 
           <div className="flex flex-col md:flex-row items-center gap-10">
             {/* Text side */}

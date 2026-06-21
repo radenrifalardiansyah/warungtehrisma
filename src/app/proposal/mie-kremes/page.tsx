@@ -90,16 +90,6 @@ export default function MieKremesProposalPage() {
         </div>
         <div className="relative max-w-4xl mx-auto px-6 pt-6 pb-16 md:pb-20">
 
-          {/* Nav */}
-          <div className="flex justify-between items-center mb-10 no-print">
-            <a href="/proposal" className={`inline-flex items-center gap-2 ${C.navBtn} border font-medium text-sm px-4 py-2 rounded-xl shadow-sm transition-all hover:shadow-md`}>
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
-              Semua Proposal
-            </a>
-            <a href="/" className="inline-flex items-center gap-2 bg-white border border-orange-200 hover:border-orange-400 text-orange-700 font-medium text-sm px-4 py-2 rounded-xl shadow-sm transition-all hover:shadow-md">
-              🏠 Ke Toko
-            </a>
-          </div>
 
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
             {/* Text + stats */}
