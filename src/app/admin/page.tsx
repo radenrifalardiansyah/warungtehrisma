@@ -5,7 +5,7 @@ import Image from 'next/image';
 import {
   LogOut, RefreshCw, MessageCircle, Eye, Smartphone, Monitor,
   TrendingUp, BarChart2, Home, Receipt, ChevronRight, ChevronLeft,
-  Plus, Minus, Send, CheckCircle2, ShoppingBag,
+  Plus, Minus, Send, CheckCircle2, ShoppingBag, FileDown, Loader2,
 } from 'lucide-react';
 import { products } from '@/lib/products';
 import { formatCurrency, WHATSAPP_NUMBER } from '@/lib/whatsapp';
@@ -134,9 +134,12 @@ export default function AdminPage() {
   const [invoiceItems, setInvoiceItems] = useState<InvoiceItem[]>(
     () => products.map(p => ({ productId: p.id, qty: 0 }))
   );
-  const [custName,  setCustName]  = useState('');
-  const [custPhone, setCustPhone] = useState('');
-  const [sent,      setSent]      = useState(false);
+  const [custName,   setCustName]   = useState('');
+  const [custPhone,  setCustPhone]  = useState('');
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const [pdfDone,    setPdfDone]    = useState(false);
+  const [pdfErr,     setPdfErr]     = useState('');
+  const [sent,       setSent]       = useState(false);
 
   const invoiceTotal = invoiceItems.reduce((sum, i) => {
     if (i.qty === 0) return sum;
@@ -157,10 +160,57 @@ export default function AdminPage() {
     setInvoiceItems(products.map(p => ({ productId: p.id, qty: 0 })));
     setCustName('');
     setCustPhone('');
+    setPdfLoading(false);
+    setPdfDone(false);
+    setPdfErr('');
     setSent(false);
   };
 
-  const sendInvoice = () => {
+  const downloadPdf = async () => {
+    setPdfLoading(true);
+    setPdfErr('');
+    try {
+      const now = new Date();
+      const pad = (n: number) => n.toString().padStart(2, '0');
+      const invoiceNo = `INV-${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}`;
+      const dateStr = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+
+      const items = invoiceItems.filter(i => i.qty > 0).map(i => {
+        const p = products.find(pr => pr.id === i.productId)!;
+        return { name: p.name, weight: p.weight, qty: i.qty, price: p.price, subtotal: p.price * i.qty };
+      });
+
+      const res = await fetch('/api/admin/invoice-pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          invoiceNo, date: dateStr,
+          customerName: custName, customerPhone: custPhone,
+          items, total: invoiceTotal,
+          logo: '', halalLogo: '',
+        }),
+      });
+
+      if (!res.ok) throw new Error('Gagal generate PDF');
+
+      const blob = await res.blob();
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = `Invoice-${invoiceNo}-${custName.replace(/\s+/g, '-')}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      setPdfDone(true);
+    } catch {
+      setPdfErr('Gagal membuat PDF. Coba lagi.');
+    } finally {
+      setPdfLoading(false);
+    }
+  };
+
+  const openWA = () => {
     const phone = normalizePhone(custPhone);
     const msg   = formatInvoiceMessage(invoiceItems, custName);
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
@@ -471,11 +521,15 @@ export default function AdminPage() {
             <CheckCircle2 size={36} className="text-green-500" />
           </div>
           <div className="text-center">
-            <p className="font-bold text-amber-900 text-base">Invoice Terkirim!</p>
+            <p className="font-bold text-amber-900 text-base">Invoice Selesai Dikirim!</p>
             <p className="text-xs text-amber-500/70 mt-1">
-              WhatsApp sudah terbuka ke nomor <br />
-              <span className="font-semibold text-amber-700">{custPhone}</span> atas nama <span className="font-semibold text-amber-700">{custName}</span>
+              PDF sudah diunduh &amp; WhatsApp sudah terbuka<br />
+              ke nomor <span className="font-semibold text-amber-700">{custPhone}</span><br />
+              atas nama <span className="font-semibold text-amber-700">{custName}</span>
             </p>
+          </div>
+          <div className="bg-amber-50 rounded-xl border border-amber-100 px-5 py-3 text-xs text-amber-700 text-center">
+            Lampirkan PDF invoice yang sudah terunduh di WhatsApp
           </div>
           <button onClick={resetInvoice}
             className="mt-2 px-6 py-3 rounded-xl text-sm font-bold text-white shadow"
@@ -498,29 +552,38 @@ export default function AdminPage() {
           <p className="text-xs text-amber-500/70">Pastikan sudah benar sebelum dikirim</p>
         </div>
 
-        {/* Invoice card */}
+        {/* Invoice card preview */}
         <div className="bg-white rounded-2xl border border-amber-200 shadow-sm overflow-hidden">
-          {/* Header kartu */}
-          <div className="px-4 py-3 text-center" style={{ background: 'linear-gradient(135deg,#D97706,#EA580C)' }}>
-            <p className="text-white font-bold text-sm">INVOICE CEMILAN TEH RISMA</p>
-            <p className="text-white/70 text-xs">🧾</p>
+          <div className="px-4 py-3 flex items-center justify-between" style={{ background: 'linear-gradient(135deg,#D97706,#EA580C)' }}>
+            <div>
+              <p className="text-white font-bold text-sm">INVOICE CEMILAN TEH RISMA</p>
+              <p className="text-white/70 text-xs">Bogor, Jawa Barat · 0812-1213-2014</p>
+            </div>
+            <span className="text-2xl">🧾</span>
           </div>
 
-          <div className="px-4 py-3 border-b border-amber-100">
-            <p className="text-xs text-amber-500/70 mb-0.5">Kepada</p>
-            <p className="text-sm font-bold text-amber-900">{custName}</p>
-            <p className="text-xs text-amber-600">{custPhone}</p>
+          <div className="px-4 py-3 border-b border-amber-100 flex items-start justify-between gap-4">
+            <div>
+              <p className="text-xs text-amber-500/70 mb-0.5">Tagihan Kepada</p>
+              <p className="text-sm font-bold text-amber-900">{custName}</p>
+              <p className="text-xs text-amber-600">{custPhone}</p>
+            </div>
+            <div className="text-right">
+              <p className="text-xs text-amber-500/70 mb-0.5">Status</p>
+              <span className="inline-block text-xs font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full">
+                Menunggu Bayar
+              </span>
+            </div>
           </div>
 
-          <div className="px-4 py-3 space-y-2.5">
+          {/* Items */}
+          <div className="divide-y divide-amber-50">
             {selectedProducts.map((item, i) => (
-              <div key={item.product.id} className="flex items-start gap-2">
-                <span className="text-xs text-amber-400 w-4 flex-shrink-0 pt-0.5">{i + 1}.</span>
+              <div key={item.product.id} className="px-4 py-2.5 flex items-center gap-2">
+                <span className="text-xs text-amber-400 w-5 flex-shrink-0">{i + 1}.</span>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-amber-900 leading-tight">{item.product.name}</p>
-                  <p className="text-xs text-amber-500">
-                    {item.qty} pcs × {formatCurrency(item.product.price)}
-                  </p>
+                  <p className="text-xs text-amber-500">{item.product.weight} · {item.qty} pcs × {formatCurrency(item.product.price)}</p>
                 </div>
                 <span className="text-sm font-bold text-amber-800 flex-shrink-0">
                   {formatCurrency(item.product.price * item.qty)}
@@ -531,32 +594,53 @@ export default function AdminPage() {
 
           <div className="mx-4 border-t border-dashed border-amber-200" />
 
-          <div className="px-4 py-3 flex items-center justify-between">
-            <span className="text-sm font-semibold text-amber-700">Total</span>
-            <span className="text-base font-bold text-amber-900">{formatCurrency(invoiceTotal)}</span>
-          </div>
-
-          <div className="px-4 pb-4 pt-0">
-            <p className="text-xs text-amber-500/70 text-center italic">
-              Terima kasih sudah pesan di Cemilan Teh Risma! 🙏
-            </p>
+          <div className="px-4 py-3 flex items-center justify-between bg-amber-50/50">
+            <span className="text-sm font-bold text-amber-800">TOTAL</span>
+            <span className="text-lg font-bold text-amber-900">{formatCurrency(invoiceTotal)}</span>
           </div>
         </div>
 
+        {pdfErr && (
+          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-xs text-red-600">
+            {pdfErr}
+          </div>
+        )}
+
+        {/* Action buttons */}
         <div className="flex gap-3">
-          <button onClick={() => setInvoiceStep(2)}
-            className="flex items-center gap-1.5 px-4 py-3 rounded-xl text-sm font-semibold text-amber-700 bg-amber-100 hover:bg-amber-200 transition-colors">
+          <button
+            onClick={() => { setInvoiceStep(2); setPdfDone(false); setPdfErr(''); }}
+            disabled={pdfLoading}
+            className="flex items-center gap-1.5 px-4 py-3 rounded-xl text-sm font-semibold text-amber-700 bg-amber-100 hover:bg-amber-200 transition-colors disabled:opacity-40">
             <ChevronLeft size={16} /> Edit
           </button>
-          <button onClick={sendInvoice}
-            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold text-white shadow-lg transition-opacity hover:opacity-90"
-            style={{ background: 'linear-gradient(135deg,#16A34A,#22C55E)' }}>
-            <Send size={16} /> Kirim via WhatsApp
+          <button
+            onClick={downloadPdf}
+            disabled={pdfLoading || pdfDone}
+            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold text-white shadow-lg transition-opacity hover:opacity-90 disabled:opacity-50"
+            style={{ background: 'linear-gradient(135deg,#D97706,#EA580C)' }}>
+            {pdfLoading
+              ? <><Loader2 size={16} className="animate-spin" /> Membuat PDF...</>
+              : pdfDone
+                ? <><CheckCircle2 size={16} /> PDF Terunduh!</>
+                : <><FileDown size={16} /> Download PDF Invoice</>
+            }
           </button>
         </div>
 
+        {pdfDone && (
+          <button
+            onClick={openWA}
+            className="w-full flex items-center justify-center gap-2.5 py-4 rounded-2xl text-white font-bold text-sm shadow-lg transition-opacity hover:opacity-90"
+            style={{ background: 'linear-gradient(135deg,#16A34A,#22C55E)' }}>
+            <Send size={18} /> Buka WhatsApp ke {custPhone}
+          </button>
+        )}
+
         <p className="text-center text-amber-400/60 text-xs">
-          WA akan terbuka ke nomor {custPhone} — tap Send untuk kirim
+          {pdfDone
+            ? 'Lampirkan PDF invoice di WhatsApp, lalu tap Send'
+            : 'Download PDF dulu → lalu kirim via WhatsApp'}
         </p>
       </div>
     );
