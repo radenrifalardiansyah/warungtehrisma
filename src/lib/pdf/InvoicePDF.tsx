@@ -15,6 +15,8 @@ export interface InvoiceData {
   customerName: string;
   customerPhone:string;
   items:        InvoiceItem[];
+  subtotal:     number;
+  discount?:    { amount: number; label: string };
   total:        number;
   logo:         string;
   halalLogo:    string;
@@ -183,7 +185,8 @@ const s = StyleSheet.create({
 });
 
 export default function InvoicePDF({ data }: { data: InvoiceData }) {
-  const itemCount = data.items.reduce((s, i) => s + i.qty, 0);
+  const itemCount    = data.items.reduce((s, i) => s + i.qty, 0);
+  const hasDiscount  = data.discount && data.discount.amount > 0;
 
   return (
     <Document
@@ -239,11 +242,15 @@ export default function InvoicePDF({ data }: { data: InvoiceData }) {
               {[
                 ['Jumlah Produk', `${data.items.length} item`],
                 ['Total Qty',     `${itemCount} pcs`],
+                ...(hasDiscount ? [
+                  ['Subtotal',  rp(data.subtotal)],
+                  ['Diskon',    `- ${rp(data.discount!.amount)} (${data.discount!.label})`],
+                ] : []),
                 ['Total Tagihan', rp(data.total)],
               ].map(([k, v]) => (
                 <View key={k} style={s.summaryRow}>
                   <Text style={s.summaryKey}>{k}</Text>
-                  <Text style={s.summaryVal}>{v}</Text>
+                  <Text style={[s.summaryVal, k === 'Diskon' ? { color: C.green } : {}]}>{v}</Text>
                 </View>
               ))}
             </View>
@@ -276,8 +283,18 @@ export default function InvoicePDF({ data }: { data: InvoiceData }) {
             <View style={s.totalBox}>
               <View style={s.totalRowGray}>
                 <Text style={s.totalGrayKey}>Subtotal ({itemCount} pcs)</Text>
-                <Text style={s.totalGrayVal}>{rp(data.total)}</Text>
+                <Text style={s.totalGrayVal}>{rp(data.subtotal)}</Text>
               </View>
+              {hasDiscount && (
+                <View style={s.totalRowGray}>
+                  <Text style={[s.totalGrayKey, { color: C.green }]}>
+                    Diskon ({data.discount!.label})
+                  </Text>
+                  <Text style={[s.totalGrayVal, { color: C.green }]}>
+                    - {rp(data.discount!.amount)}
+                  </Text>
+                </View>
+              )}
               <View style={s.totalRowGray}>
                 <Text style={s.totalGrayKey}>Ongkos Kirim</Text>
                 <Text style={s.totalGrayVal}>Sesuai kesepakatan</Text>
