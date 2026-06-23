@@ -4,6 +4,8 @@ import { renderToBuffer } from '@react-pdf/renderer';
 import InvoicePDF, { type InvoiceData } from '@/lib/pdf/InvoicePDF';
 import { LOGO_DATA_URI, HALAL_DATA_URI } from '@/lib/invoice-assets';
 
+export const runtime = 'nodejs';
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json() as InvoiceData;
@@ -27,7 +29,9 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    const stack = err instanceof Error ? err.stack : '';
     console.error('[PDF] invoice error:', err);
-    return NextResponse.json({ error: 'Gagal generate PDF' }, { status: 500 });
+    return NextResponse.json({ error: 'Gagal generate PDF', detail: msg, stack }, { status: 500 });
   }
 }
